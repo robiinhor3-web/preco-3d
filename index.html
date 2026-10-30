@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preço 3D</title>
+<meta name="theme-color" content="#0f9d6b">
+<meta name="description" content="Calcule custo e preço de venda de impressões 3D.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Preço 3D">
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1b1f24;--mu:#6b7280;--bd:#e3e6ea;--ac:#0f9d6b;--ac2:#e7f6ef;--wa:#c2410c;
+--c1:#2563eb;--c2:#f59e0b;--c3:#8b5cf6;--c4:#ef4444;--c5:#10b981;--c6:#64748b}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1e24;--tx:#e8eaed;--mu:#9aa3ad;--bd:#2b313a;--ac:#34d399;--ac2:#13302a;--wa:#fb923c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,Segoe UI,Roboto,sans-serif}
+header{display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--bd);background:var(--card);position:sticky;top:0;z-index:5}
+header h1{font-size:18px;margin:0}
+nav{display:flex;gap:4px;margin-left:auto}
+nav button{border:0;background:none;color:var(--mu);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
+nav button.on{background:var(--ac2);color:var(--ac);font-weight:600}
+main{max-width:1150px;margin:0 auto;padding:20px 16px}
+.grid{display:grid;grid-template-columns:1fr 400px;gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:16px}
+.card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);margin:0 0 12px}
+label{display:block;font-size:13px;color:var(--mu);margin-bottom:4px}
+input,select{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+input:focus,select:focus{outline:2px solid var(--ac);outline-offset:-1px}
+.row{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:10px}
+.fil{display:grid;grid-template-columns:1fr 110px 36px;gap:8px;margin-bottom:8px}
+.fil4{grid-template-columns:1fr 130px 110px 36px}
+.btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.btn.x{padding:0;color:var(--mu)}
+.drop{border:2px dashed var(--bd);border-radius:12px;padding:18px;text-align:center;color:var(--mu);cursor:pointer;margin-bottom:16px}
+.drop.hov{border-color:var(--ac);background:var(--ac2)}
+.drop b{color:var(--tx)}
+.res{position:sticky;top:76px}
+.big{font-size:34px;font-weight:700;color:var(--ac);line-height:1.1}
+.mu{color:var(--mu);font-size:13px}
+.bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:12px 0 8px;background:var(--bd)}
+.lin{display:flex;justify-content:space-between;padding:3px 0;font-size:14px}
+.lin i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:7px 4px;border-bottom:1px solid var(--bd);text-align:right}
+td:first-child,th:first-child{text-align:left}
+th{color:var(--mu);font-weight:500;font-size:12px}
+.pr{font-weight:700}
+.neg{color:var(--c4)}
+.msg{font-size:13px;margin-top:8px;color:var(--ac);min-height:18px}
+.hist{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.hide{display:none}
+.grid2{grid-template-columns:1fr 1fr}
+.grid>*{min-width:0}
+@media (max-width:900px){.res{position:static}.grid2{grid-template-columns:1fr}}
+@media (max-width:600px){header{flex-wrap:wrap;gap:8px;padding:10px 12px}nav{margin-left:0;width:100%}nav button{flex:1}
+  main{padding:14px 12px}input,select{font-size:16px}.fil4{grid-template-columns:1fr 1fr 36px}.fil4 select{grid-column:1/-1}
+  .fil4>label:first-child,.fil4>span{display:none}.hist{grid-template-columns:1fr auto auto}.hist>b{grid-column:1/-1}}
+small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
+</style>
+</head>
+<body>
+<header>
+  <h1><img src="icons/icon-192.png" alt="" style="width:26px;height:26px;border-radius:6px;vertical-align:-6px;margin-right:6px">Preço 3D</h1>
+  <nav>
+    <button data-tab="calc" class="on">Calcular</button>
+    <button data-tab="hist">Orçamentos</button>
+    <button data-tab="cfg">Configurações</button>
+  </nav>
+</header>
+<main>
+
+<!-- ================= CALCULAR ================= -->
+<section id="tab-calc">
+<div class="grid">
+<div>
+  <div class="drop" id="drop">
+    <b>Arraste aqui o arquivo fatiado</b> (.gcode.3mf ou .gcode do Bambu Studio)<br>
+    <span class="mu">ou clique para escolher. Peso e tempo são preenchidos sozinhos.</span>
+    <input type="file" id="arq" accept=".3mf,.gcode" hidden>
+    <div class="msg" id="msgArq"></div>
+  </div>
+
+  <div class="card">
+    <h2>Peça</h2>
+    <div class="row">
+      <div style="grid-column:span 2"><label>Nome / cliente</label><input id="nome" placeholder="Ex.: Caixa ondulada - Kamila"></div>
+      <div><label>Peças na impressão</label><input id="qtd" type="number" min="1" value="1"><small class="h">divide o custo</small></div>
+    </div>
+    <div class="row">
+      <div><label>Tempo (horas)</label><input id="hh" type="number" min="0" value="0"></div>
+      <div><label>Tempo (minutos)</label><input id="mm" type="number" min="0" value="0"></div>
+      <div><label>Canal de venda</label><select id="canal"></select></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Filamento e peso</h2>
+    <div class="mu" style="margin-bottom:10px">Coloque quanto você pagou no rolo de 1 kg e o peso em gramas que o Bambu mostra no fatiamento. O preço fica salvo para as próximas vezes.</div>
+    <div id="fils"></div>
+    <button class="btn" id="addFil">+ cor / material</button>
+  </div>
+
+  <div class="card">
+    <h2>Extras</h2>
+    <div class="row">
+      <div><label>Mão de obra (min)</label><input id="mo" type="number" min="0" value="0"><small class="h">acabamento, montagem, pintura</small></div>
+      <div><label>Extras (R$)</label><input id="ext" type="number" min="0" step="0.01" value="0"><small class="h">ímãs, parafusos, embalagem</small></div>
+      <div><label>Margem de lucro (%)</label><input id="mar" type="number" min="0" value="100"></div>
+    </div>
+  </div>
+</div>
+
+<div class="res">
+  <div class="card">
+    <h2>Preço sugerido (unidade)</h2>
+    <div class="big" id="preco">R$ 0,00</div>
+    <div class="mu" id="sub"></div>
+    <div class="bar" id="bar"></div>
+    <div id="det"></div>
+  </div>
+  <div class="card">
+    <h2>Por canal</h2>
+    <table><thead><tr><th>Canal</th><th>Preço</th><th>Taxas</th><th>Lucro</th></tr></thead><tbody id="canais"></tbody></table>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="btn pri" id="salvar" style="flex:1">Salvar orçamento</button>
+    <button class="btn" id="copiar" style="flex:1">Copiar p/ WhatsApp</button>
+  </div>
+  <div class="msg" id="msg"></div>
+</div>
+</div>
+</section>
+
+<!-- ================= HISTÓRICO ================= -->
+<section id="tab-hist" class="hide">
+  <div class="card"><h2>Orçamentos salvos</h2><div id="lista"></div></div>
+</section>
+
+<!-- ================= CONFIG ================= -->
+<section id="tab-cfg" class="hide">
+<div class="grid grid2">
+  <div class="card">
+    <h2>Filamentos (preço do rolo de 1 kg)</h2>
+    <div id="cfgFils"></div>
+    <button class="btn" id="cfgAddFil">+ filamento</button>
+  </div>
+  <div class="card">
+    <h2>Impressora e energia</h2>
+    <div class="row">
+      <div><label>Preço da impressora (R$)</label><input data-c="maqPreco" type="number"></div>
+      <div><label>Vida útil (horas)</label><input data-c="maqVida" type="number"></div>
+    </div>
+    <div class="row">
+      <div><label>Manutenção (R$/hora)</label><input data-c="manut" type="number" step="0.01"><small class="h">bico, PEI, correias…</small></div>
+      <div><label>Consumo médio (W)</label><input data-c="watts" type="number"><small class="h">A1 em PLA ≈ 100 W</small></div>
+      <div><label>Energia (R$/kWh)</label><input data-c="kwh" type="number" step="0.01"></div>
+    </div>
+    <div class="row">
+      <div><label>Mão de obra (R$/hora)</label><input data-c="moHora" type="number" step="0.5"></div>
+      <div><label>Taxa de falha (%)</label><input data-c="falha" type="number"><small class="h">impressões perdidas</small></div>
+      <div><label>Desperdício filamento (%)</label><input data-c="desp" type="number"><small class="h">purga, brim, suporte</small></div>
+    </div>
+    <label style="display:flex;gap:8px;align-items:center;color:var(--tx)"><input data-c="arred" type="checkbox" style="width:auto"> Arredondar preço para final ,90</label>
+  </div>
+  <div class="card" style="grid-column:1/-1">
+    <h2>Canais de venda (taxas)</h2>
+    <div class="mu" style="margin-bottom:10px">Confira as taxas atuais nas plataformas, elas mudam. % = comissão sobre o preço; fixo = valor por item vendido.</div>
+    <div id="cfgCanais"></div>
+    <button class="btn" id="cfgAddCanal">+ canal</button>
+  </div>
+  <div class="mu" style="grid-column:1/-1;text-align:center"><a href="privacidade.html" style="color:var(--mu)">Política de privacidade</a> · Preço 3D v1.0</div>
+</div>
+</section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const brl = v => (isFinite(v) ? v : 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+const num = v => parseFloat(String(v).replace(',', '.')) || 0;
+
+const PADRAO = {
+  fils: [{nome: 'PLA', kg: 100}, {nome: 'PETG', kg: 110}, {nome: 'PLA Silk', kg: 130}, {nome: 'TPU', kg: 180}],
+  maqPreco: 3500, maqVida: 5000, manut: 0.30, watts: 100, kwh: 0.95,
+  moHora: 20, falha: 10, desp: 5, arred: true,
+  canais: [{nome: 'Venda direta', pct: 0, fixo: 0}, {nome: 'Shopee', pct: 20, fixo: 4},
+           {nome: 'Mercado Livre', pct: 14, fixo: 6.75}]
+};
+function ler(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
+function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+let cfg = Object.assign(structuredClone(PADRAO), ler('calc3d.cfg', {}));
+let hist = ler('calc3d.hist', []);
+let job = ler('calc3d.job', null) || {fils: [{i: 0, g: 0}]};
+
+// ---------- abas
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  ['calc', 'hist', 'cfg'].forEach(t => $('#tab-' + t).classList.toggle('hide', t !== b.dataset.tab));
+  if (b.dataset.tab === 'hist') desenhaHist();
+  if (b.dataset.tab === 'calc') { montaSelects(); calc(); }
+});
+
+// ---------- filamentos da peça
+function desenhaFils() {
+  $('#fils').innerHTML = '<div class="fil fil4" style="margin-bottom:2px"><label>Material</label><label>Preço do rolo 1 kg (R$)</label><label>Peso (gramas)</label><span></span></div>';
+  job.fils.forEach((f, k) => {
+    const d = document.createElement('div');
+    d.className = 'fil fil4';
+    d.innerHTML = `<select>${cfg.fils.map((c, i) => `<option value="${i}" ${i == f.i ? 'selected' : ''}>${c.nome}</option>`).join('')}</select>
+      <input type="number" min="0" step="0.01" value="${cfg.fils[f.i].kg}" title="vale para todo ${cfg.fils[f.i].nome} (fica salvo)">
+      <input type="number" min="0" step="0.1" value="${f.g}" placeholder="gramas">
+      <button class="btn x" title="remover">✕</button>`;
+    const [s, pr, g, x] = d.children;
+    s.onchange = () => { f.i = +s.value; pr.value = cfg.fils[f.i].kg; calc(); };
+    pr.oninput = () => { cfg.fils[f.i].kg = num(pr.value); salvaCfg(); desenhaCfg(); calc(); };
+    g.oninput = () => { f.g = num(g.value); calc(); };
+    x.onclick = () => { if (job.fils.length > 1) { job.fils.splice(k, 1); desenhaFils(); calc(); } };
+    $('#fils').appendChild(d);
+  });
+}
+$('#addFil').onclick = () => { job.fils.push({i: 0, g: 0}); desenhaFils(); };
+
+function montaSelects() {
+  const c = $('#canal'), v = c.value || job.canal || 0;
+  c.innerHTML = cfg.canais.map((k, i) => `<option value="${i}">${k.nome}</option>`).join('');
+  c.value = Math.min(+v, cfg.canais.length - 1);
+  job.fils.forEach(f => { if (f.i >= cfg.fils.length) f.i = 0; });
+  desenhaFils();
+}
+
+// ---------- cálculo
+const CAMPOS = ['nome', 'qtd', 'hh', 'mm', 'mo', 'ext', 'mar', 'canal'];
+function lerJob() { CAMPOS.forEach(k => job[k] = $('#' + k).value); }
+function preencheJob() { CAMPOS.forEach(k => { if (job[k] !== undefined) $('#' + k).value = job[k]; }); }
+
+function arredonda(p) {
+  if (!cfg.arred || p <= 0) return p;
+  const c = Math.ceil(p) - 0.10;
+  return c >= p - 1e-9 ? c : c + 1;
+}
+function precoCanal(liq, k) { return (liq + num(k.fixo)) / (1 - num(k.pct) / 100); }
+
+function conta() {
+  const qtd = Math.max(1, num(job.qtd));
+  const horas = num(job.hh) + num(job.mm) / 60;
+  const gramas = job.fils.reduce((s, f) => s + num(f.g), 0);
+  const mat = job.fils.reduce((s, f) => s + num(f.g) / 1000 * num((cfg.fils[f.i] || cfg.fils[0]).kg), 0) * (1 + num(cfg.desp) / 100);
+  const ene = horas * num(cfg.watts) / 1000 * num(cfg.kwh);
+  const maq = horas * (num(cfg.maqPreco) / Math.max(1, num(cfg.maqVida)) + num(cfg.manut));
+  const fal = (mat + ene + maq) * num(cfg.falha) / 100;
+  const mo = num(job.mo) / 60 * num(cfg.moHora);
+  const ext = num(job.ext);
+  const total = mat + ene + maq + fal + mo + ext;
+  const unit = total / qtd;
+  const liq = unit * (1 + num(job.mar) / 100);
+  const canais = cfg.canais.map(k => {
+    const p = arredonda(precoCanal(liq, k));
+    const taxa = p * num(k.pct) / 100 + num(k.fixo);
+    return {nome: k.nome, p, taxa, lucro: p - taxa - unit};
+  });
+  return {qtd, horas, gramas, partes: [['Filamento', mat, 'c1'], ['Energia', ene, 'c2'], ['Impressora', maq, 'c3'],
+    ['Falhas', fal, 'c4'], ['Mão de obra', mo, 'c5'], ['Extras', ext, 'c6']], total, unit, canais};
+}
+
+let ultimo;
+function calc() {
+  lerJob(); gravar('calc3d.job', job);
+  const r = ultimo = conta();
+  const ci = Math.min(num(job.canal), r.canais.length - 1);
+  const c = r.canais[ci];
+  $('#preco').textContent = brl(c.p);
+  $('#sub').textContent = `${c.nome} · custo ${brl(r.unit)} · lucro ${brl(c.lucro)} por peça`;
+  $('#bar').innerHTML = r.partes.filter(p => p[1] > 0).map(p => `<div style="width:${p[1] / r.total * 100}%;background:var(--${p[2]})"></div>`).join('');
+  $('#det').innerHTML = r.partes.map(p => `<div class="lin"><span><i style="background:var(--${p[2]})"></i>${p[0]}</span><span>${brl(p[1] / r.qtd)}</span></div>`).join('') +
+    `<div class="lin" style="border-top:1px solid var(--bd);margin-top:4px;padding-top:6px"><b>Custo por peça</b><b>${brl(r.unit)}</b></div>` +
+    `<div class="mu">${r.gramas.toFixed(1)} g · ${Math.floor(r.horas)}h${String(Math.round(r.horas % 1 * 60)).padStart(2, '0')} · ${r.qtd} peça(s) na impressão</div>`;
+  $('#canais').innerHTML = r.canais.map((k, i) => `<tr${i === ci ? ' style="background:var(--ac2)"' : ''}><td>${k.nome}</td><td class="pr">${brl(k.p)}</td><td>${brl(k.taxa)}</td><td class="${k.lucro < 0 ? 'neg' : ''}">${brl(k.lucro)}</td></tr>`).join('');
+}
+CAMPOS.forEach(k => $('#' + k).addEventListener('input', calc));
+
+function aviso(t) { $('#msg').textContent = t; setTimeout(() => $('#msg').textContent = '', 2500); }
+function texto(o) {
+  return `*Orçamento - impressão 3D*\n${o.nome || 'Peça'}\nQuantidade: ${o.qtd}\nValor unitário: ${brl(o.preco)}\n*Total: ${brl(o.preco * o.qtd)}*`;
+}
+$('#copiar').onclick = () => {
+  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
+  navigator.clipboard.writeText(texto({nome: job.nome, qtd: ultimo.qtd, preco: c.p})).then(() => aviso('Copiado! Cole no WhatsApp.'));
+};
+$('#salvar').onclick = () => {
+  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
+  hist.unshift({data: new Date().toLocaleDateString('pt-BR'), nome: job.nome || 'Sem nome', canal: c.nome,
+    preco: c.p, custo: ultimo.unit, qtd: ultimo.qtd, job: structuredClone(job)});
+  gravar('calc3d.hist', hist); aviso('Orçamento salvo.');
+};
+
+function desenhaHist() {
+  $('#lista').innerHTML = hist.length ? '' : '<div class="mu">Nenhum orçamento salvo ainda.</div>';
+  hist.forEach((h, i) => {
+    const d = document.createElement('div');
+    d.className = 'hist';
+    d.innerHTML = `<div><b>${h.nome.replace(/</g, '&lt;')}</b><div class="mu">${h.data} · ${h.canal} · ${h.qtd} peça(s) · custo ${brl(h.custo)}</div></div>
+      <b style="color:var(--ac)">${brl(h.preco)}</b><button class="btn">Abrir</button><button class="btn x" style="width:36px;height:36px">✕</button>`;
+    const [, , ab, del] = d.children;
+    ab.onclick = () => { job = structuredClone(h.job); preencheJob(); montaSelects(); $('[data-tab=calc]').click(); };
+    del.onclick = () => { if (confirm('Apagar este orçamento?')) { hist.splice(i, 1); gravar('calc3d.hist', hist); desenhaHist(); } };
+    $('#lista').appendChild(d);
+  });
+}
+
+// ---------- configurações
+function desenhaCfg() {
+  document.querySelectorAll('[data-c]').forEach(e => {
+    if (e.type === 'checkbox') { e.checked = !!cfg[e.dataset.c]; e.onchange = () => { cfg[e.dataset.c] = e.checked; salvaCfg(); }; }
+    else { e.value = cfg[e.dataset.c]; e.oninput = () => { cfg[e.dataset.c] = num(e.value); salvaCfg(); }; }
+  });
+  lista('#cfgFils', cfg.fils, [['nome', 'Nome', 'text'], ['kg', 'R$/kg', 'number']]);
+  lista('#cfgCanais', cfg.canais, [['nome', 'Canal', 'text'], ['pct', 'Comissão %', 'number'], ['fixo', 'Fixo R$', 'number']]);
+}
+function lista(sel, arr, cols) {
+  const box = $(sel); box.innerHTML = '';
+  arr.forEach((it, i) => {
+    const d = document.createElement('div');
+    d.className = 'fil';
+    d.style.gridTemplateColumns = cols.map((c, j) => j ? '110px' : '1fr').join(' ') + ' 36px';
+    cols.forEach(([k, ph, t]) => {
+      const e = document.createElement('input');
+      e.type = t; e.placeholder = ph; e.value = it[k]; e.title = ph;
+      if (t === 'number') e.step = '0.01';
+      e.oninput = () => { it[k] = t === 'number' ? num(e.value) : e.value; salvaCfg(); };
+      d.appendChild(e);
+    });
+    const x = document.createElement('button');
+    x.className = 'btn x'; x.textContent = '✕';
+    x.onclick = () => { if (arr.length > 1) { arr.splice(i, 1); salvaCfg(); desenhaCfg(); } };
+    d.appendChild(x);
+    box.appendChild(d);
+  });
+}
+function salvaCfg() { gravar('calc3d.cfg', cfg); }
+$('#cfgAddFil').onclick = () => { cfg.fils.push({nome: 'Novo', kg: 100}); salvaCfg(); desenhaCfg(); };
+$('#cfgAddCanal').onclick = () => { cfg.canais.push({nome: 'Novo canal', pct: 0, fixo: 0}); salvaCfg(); desenhaCfg(); };
+
+// ---------- leitura do arquivo fatiado (zip sem biblioteca)
+async function lerZip(buf, alvo) {
+  const v = new DataView(buf);
+  let e = buf.byteLength - 22;
+  while (e >= 0 && v.getUint32(e, true) !== 0x06054b50) e--;
+  if (e < 0) throw new Error('não é um .3mf válido');
+  let p = v.getUint32(e + 16, true);
+  const n = v.getUint16(e + 10, true), dec = new TextDecoder();
+  for (let k = 0; k < n; k++) {
+    const met = v.getUint16(p + 10, true), tam = v.getUint32(p + 20, true);
+    const ln = v.getUint16(p + 28, true), lx = v.getUint16(p + 30, true), lc = v.getUint16(p + 32, true);
+    const loc = v.getUint32(p + 42, true);
+    const nome = dec.decode(new Uint8Array(buf, p + 46, ln));
+    if (nome === alvo) {
+      const ini = loc + 30 + v.getUint16(loc + 26, true) + v.getUint16(loc + 28, true);
+      const dado = new Uint8Array(buf, ini, tam);
+      if (met === 0) return dec.decode(dado);
+      const s = new Blob([dado]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      return await new Response(s).text();
+    }
+    p += 46 + ln + lx + lc;
+  }
+  return null;
+}
+function achaFil(tipo) {
+  const t = (tipo || '').toLowerCase();
+  const i = cfg.fils.findIndex(f => f.nome.toLowerCase() === t);
+  return i >= 0 ? i : Math.max(0, cfg.fils.findIndex(f => t.includes(f.nome.toLowerCase().split(' ')[0])));
+}
+function aplica(seg, fils, origem) {
+  job.hh = Math.floor(seg / 3600); job.mm = Math.round(seg % 3600 / 60);
+  job.fils = fils.length ? fils : [{i: 0, g: 0}];
+  preencheJob(); desenhaFils(); calc();
+  $('#msgArq').textContent = '✔ ' + origem;
+}
+async function carregaArq(f) {
+  try {
+    if (/\.gcode$/i.test(f.name)) {
+      const t = await f.slice(0, 200000).text() + await f.slice(-200000).text();
+      const tm = t.match(/total estimated time:\s*([^;\n]+)/i) || t.match(/estimated printing time[^=]*=\s*([^\n]+)/i);
+      let seg = 0;
+      if (tm) { const u = {d: 86400, h: 3600, m: 60, s: 1}; tm[1].replace(/(\d+)\s*([dhms])/g, (_, a, b) => seg += a * u[b]); }
+      const g = t.match(/total filament weight \[g\]\s*:\s*([\d.,]+)/i) || t.match(/filament used \[g\]\s*=\s*([\d.,]+)/i);
+      aplica(seg, g ? String(g[1]).split(',').map(x => ({i: 0, g: num(x)})).filter(x => x.g) : [], f.name);
+      return;
+    }
+    const xml = await lerZip(await f.arrayBuffer(), 'Metadata/slice_info.config');
+    if (!xml) throw new Error('arquivo sem fatiamento — no Bambu Studio use "Exportar arquivo G-code fatiado" (.gcode.3mf)');
+    const d = new DOMParser().parseFromString(xml, 'text/xml');
+    let seg = 0; const por = {};
+    d.querySelectorAll('plate').forEach(pl => {
+      const m = k => pl.querySelector(`metadata[key="${k}"]`)?.getAttribute('value');
+      seg += num(m('prediction'));
+      pl.querySelectorAll('filament').forEach(fi => {
+        const i = achaFil(fi.getAttribute('type'));
+        por[i] = (por[i] || 0) + num(fi.getAttribute('used_g'));
+      });
+    });
+    const fils = Object.entries(por).map(([i, g]) => ({i: +i, g: Math.round(g * 10) / 10}));
+    const np = d.querySelectorAll('plate').length;
+    aplica(seg, fils, `${f.name} — ${np} placa(s)`);
+    if (!$('#nome').value) { $('#nome').value = f.name.replace(/\.gcode\.3mf$|\.3mf$/i, ''); calc(); }
+  } catch (err) { $('#msgArq').textContent = '✖ ' + err.message; }
+}
+const dz = $('#drop');
+dz.onclick = () => $('#arq').click();
+$('#arq').onchange = e => e.target.files[0] && carregaArq(e.target.files[0]);
+dz.ondragover = e => { e.preventDefault(); dz.classList.add('hov'); };
+dz.ondragleave = () => dz.classList.remove('hov');
+dz.ondrop = e => { e.preventDefault(); dz.classList.remove('hov'); e.dataTransfer.files[0] && carregaArq(e.dataTransfer.files[0]); };
+
+// ---------- início
+preencheJob(); montaSelects(); desenhaCfg(); calc();
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
