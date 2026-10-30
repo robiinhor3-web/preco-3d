@@ -1,6 +1,6 @@
 // Guarda o app no aparelho para funcionar sem internet.
 // Com internet, busca sempre a versão mais nova; sem internet, usa a cópia salva.
-const CACHE = 'preco3d-v1';
+const CACHE = 'preco3d-v2';
 const ASSETS = ['./', 'index.html', 'manifest.json', 'privacidade.html',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 

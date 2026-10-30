@@ -60,6 +60,10 @@ th{color:var(--mu);font-weight:500;font-size:12px}
 @media (max-width:600px){header{flex-wrap:wrap;gap:8px;padding:10px 12px}nav{margin-left:0;width:100%}nav button{flex:1}
   main{padding:14px 12px}input,select{font-size:16px}.fil4{grid-template-columns:1fr 1fr 36px}.fil4 select{grid-column:1/-1}
   .fil4>label:first-child,.fil4>span{display:none}.hist{grid-template-columns:1fr auto auto}.hist>b{grid-column:1/-1}}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.modal.hide{display:none}
+.modal .card{max-width:480px;width:100%;max-height:92vh;overflow:auto;margin:0}
+.modal h3{margin:0 0 4px;font-size:20px}
 small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
 </style>
 </head>
@@ -127,9 +131,10 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
     <h2>Por canal</h2>
     <table><thead><tr><th>Canal</th><th>Preço</th><th>Taxas</th><th>Lucro</th></tr></thead><tbody id="canais"></tbody></table>
   </div>
+  <button class="btn pri" id="enviar" style="width:100%;margin-bottom:8px">📤 Enviar orçamento (imagem)</button>
   <div style="display:flex;gap:8px">
-    <button class="btn pri" id="salvar" style="flex:1">Salvar orçamento</button>
-    <button class="btn" id="copiar" style="flex:1">Copiar p/ WhatsApp</button>
+    <button class="btn" id="salvar" style="flex:1">Salvar orçamento</button>
+    <button class="btn" id="copiar" style="flex:1">Copiar texto</button>
   </div>
   <div class="msg" id="msg"></div>
 </div>
@@ -144,6 +149,29 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
 <!-- ================= CONFIG ================= -->
 <section id="tab-cfg" class="hide">
 <div class="grid grid2">
+  <div class="card">
+    <h2>Sua loja (aparece no orçamento)</h2>
+    <div class="row">
+      <div><label>Nome da loja</label><input data-t="loja" placeholder="Ex.: Robin 3D"></div>
+      <div><label>WhatsApp</label><input data-t="zap" type="tel" placeholder="(11) 99999-9999"></div>
+      <div><label>Instagram</label><input data-t="insta" placeholder="@sualoja"></div>
+    </div>
+    <div class="row">
+      <div><label>Validade do orçamento (dias)</label><input data-c="validade" type="number"></div>
+      <div><label>Prazo de entrega</label><input data-t="prazo" placeholder="Ex.: 3 a 5 dias úteis"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Backup</h2>
+    <div class="mu" style="margin-bottom:10px">Seus preços e orçamentos ficam só neste aparelho. Faça um backup antes de trocar de celular ou limpar os dados.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn pri" id="bkSalvar">Salvar backup</button>
+      <button class="btn" id="bkAbrir">Restaurar backup</button>
+      <button class="btn" id="refazer">Refazer configuração inicial</button>
+    </div>
+    <input type="file" id="bkArq" accept=".json,application/json" hidden>
+    <div class="msg" id="msgBk"></div>
+  </div>
   <div class="card">
     <h2>Filamentos (preço do rolo de 1 kg)</h2>
     <div id="cfgFils"></div>
@@ -173,10 +201,28 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
     <div id="cfgCanais"></div>
     <button class="btn" id="cfgAddCanal">+ canal</button>
   </div>
-  <div class="mu" style="grid-column:1/-1;text-align:center"><a href="privacidade.html" style="color:var(--mu)">Política de privacidade</a> · Preço 3D v1.0</div>
+  <div class="mu" style="grid-column:1/-1;text-align:center"><a href="privacidade.html" style="color:var(--mu)">Política de privacidade</a> · Preço 3D v1.1</div>
 </div>
 </section>
 </main>
+
+<div class="modal hide" id="boas">
+  <div class="card">
+    <h3>Bem-vindo ao Preço 3D 👋</h3>
+    <div class="mu" style="margin-bottom:14px">Responda rapidinho para os preços saírem certos. Dá para mudar tudo depois em Configurações.</div>
+    <label>Sua impressora</label>
+    <select id="wImp" style="margin-bottom:10px"></select>
+    <div class="row">
+      <div><label>Preço do rolo de PLA 1 kg (R$)</label><input id="wPla" type="number" step="0.01"></div>
+      <div><label>Energia (R$/kWh)</label><input id="wKwh" type="number" step="0.01"><small class="h">vem na conta de luz; média ≈ 0,95</small></div>
+    </div>
+    <div class="row">
+      <div><label>Nome da loja (opcional)</label><input id="wLoja"></div>
+      <div><label>WhatsApp (opcional)</label><input id="wZap" type="tel"></div>
+    </div>
+    <button class="btn pri" id="wOk" style="width:100%;margin-top:6px">Começar</button>
+  </div>
+</div>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -187,11 +233,13 @@ const PADRAO = {
   fils: [{nome: 'PLA', kg: 100}, {nome: 'PETG', kg: 110}, {nome: 'PLA Silk', kg: 130}, {nome: 'TPU', kg: 180}],
   maqPreco: 3500, maqVida: 5000, manut: 0.30, watts: 100, kwh: 0.95,
   moHora: 20, falha: 10, desp: 5, arred: true,
+  loja: '', zap: '', insta: '', prazo: '', validade: 7,
   canais: [{nome: 'Venda direta', pct: 0, fixo: 0}, {nome: 'Shopee', pct: 20, fixo: 4},
            {nome: 'Mercado Livre', pct: 14, fixo: 6.75}]
 };
 function ler(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+const primeiraVez = !ler('calc3d.cfg', null);
 let cfg = Object.assign(structuredClone(PADRAO), ler('calc3d.cfg', {}));
 let hist = ler('calc3d.hist', []);
 let job = ler('calc3d.job', null) || {fils: [{i: 0, g: 0}]};
@@ -284,8 +332,57 @@ CAMPOS.forEach(k => $('#' + k).addEventListener('input', calc));
 
 function aviso(t) { $('#msg').textContent = t; setTimeout(() => $('#msg').textContent = '', 2500); }
 function texto(o) {
-  return `*Orçamento - impressão 3D*\n${o.nome || 'Peça'}\nQuantidade: ${o.qtd}\nValor unitário: ${brl(o.preco)}\n*Total: ${brl(o.preco * o.qtd)}*`;
+  return `*Orçamento${cfg.loja ? ' - ' + cfg.loja : ' - impressão 3D'}*\n${o.nome || 'Peça'}\nQuantidade: ${o.qtd}\nValor unitário: ${brl(o.preco)}\n*Total: ${brl(o.preco * o.qtd)}*` +
+    (cfg.prazo ? `\nPrazo: ${cfg.prazo}` : '') + `\nVálido por ${num(cfg.validade) || 7} dias`;
 }
+
+// ---------- orçamento em imagem
+function imagem(o) {
+  const W = 1080, H = 1350, c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d'), F = 'Segoe UI, Roboto, system-ui, sans-serif';
+  g.fillStyle = '#f4f5f7'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#0f9d6b'; g.fillRect(0, 0, W, 300);
+  g.fillStyle = '#fff'; g.font = `700 64px ${F}`; g.fillText(cfg.loja || 'Impressão 3D', 80, 150);
+  g.font = `400 36px ${F}`; g.fillText('Orçamento · ' + new Date().toLocaleDateString('pt-BR'), 80, 220);
+  g.fillStyle = '#fff'; g.beginPath(); g.roundRect(60, 360, W - 120, 640, 32); g.fill();
+  g.fillStyle = '#6b7280'; g.font = `500 34px ${F}`; g.fillText('PEÇA', 120, 450);
+  g.fillStyle = '#1b1f24'; g.font = `700 54px ${F}`;
+  const nome0 = o.nome || 'Peça impressa em 3D';
+  let nome = nome0;
+  while (g.measureText(nome + '…').width > W - 240 && nome.length > 3) nome = nome.slice(0, -1);
+  g.fillText(nome === nome0 ? nome : nome + '…', 120, 520);
+  const lin = (y, a, b) => {
+    g.fillStyle = '#6b7280'; g.font = `400 40px ${F}`; g.fillText(a, 120, y);
+    g.fillStyle = '#1b1f24'; g.font = `600 40px ${F}`; g.textAlign = 'right'; g.fillText(b, W - 120, y); g.textAlign = 'left';
+  };
+  lin(620, 'Quantidade', String(o.qtd));
+  lin(690, 'Valor unitário', brl(o.preco));
+  if (cfg.prazo) lin(760, 'Prazo', cfg.prazo);
+  g.strokeStyle = '#e3e6ea'; g.lineWidth = 3; g.beginPath(); g.moveTo(120, 820); g.lineTo(W - 120, 820); g.stroke();
+  g.fillStyle = '#1b1f24'; g.font = `600 44px ${F}`; g.fillText('Total', 120, 920);
+  g.fillStyle = '#0f9d6b'; g.font = `800 84px ${F}`; g.textAlign = 'right'; g.fillText(brl(o.preco * o.qtd), W - 120, 930); g.textAlign = 'left';
+  g.fillStyle = '#6b7280'; g.font = `400 34px ${F}`;
+  g.fillText(`Orçamento válido por ${num(cfg.validade) || 7} dias.`, 80, 1090);
+  const contato = [cfg.zap && 'WhatsApp ' + cfg.zap, cfg.insta].filter(Boolean).join('   ·   ');
+  if (contato) { g.fillStyle = '#1b1f24'; g.font = `600 38px ${F}`; g.fillText(contato, 80, 1170); }
+  g.fillStyle = '#9aa3ad'; g.font = `400 26px ${F}`; g.fillText('Feito com Preço 3D', 80, H - 60);
+  return new Promise(r => c.toBlob(r, 'image/png'));
+}
+$('#enviar').onclick = async () => {
+  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
+  const o = {nome: job.nome, qtd: ultimo.qtd, preco: c.p};
+  const arq = new File([await imagem(o)], 'orcamento.png', {type: 'image/png'});
+  try {
+    if (navigator.canShare && navigator.canShare({files: [arq]})) {
+      await navigator.share({files: [arq], text: texto(o)});
+      return;
+    }
+  } catch (e) { if (e.name === 'AbortError') return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(arq); a.download = 'orcamento' + (job.nome ? ' - ' + job.nome : '') + '.png'; a.click();
+  aviso('Imagem salva. Envie pelo WhatsApp.');
+};
 $('#copiar').onclick = () => {
   const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
   navigator.clipboard.writeText(texto({nome: job.nome, qtd: ultimo.qtd, preco: c.p})).then(() => aviso('Copiado! Cole no WhatsApp.'));
@@ -313,6 +410,9 @@ function desenhaHist() {
 
 // ---------- configurações
 function desenhaCfg() {
+  document.querySelectorAll('[data-t]').forEach(e => {
+    e.value = cfg[e.dataset.t] || ''; e.oninput = () => { cfg[e.dataset.t] = e.value.trim(); salvaCfg(); };
+  });
   document.querySelectorAll('[data-c]').forEach(e => {
     if (e.type === 'checkbox') { e.checked = !!cfg[e.dataset.c]; e.onchange = () => { cfg[e.dataset.c] = e.checked; salvaCfg(); }; }
     else { e.value = cfg[e.dataset.c]; e.oninput = () => { cfg[e.dataset.c] = num(e.value); salvaCfg(); }; }
@@ -416,7 +516,53 @@ dz.ondragleave = () => dz.classList.remove('hov');
 dz.ondrop = e => { e.preventDefault(); dz.classList.remove('hov'); e.dataTransfer.files[0] && carregaArq(e.dataTransfer.files[0]); };
 
 // ---------- início
+// ---------- backup
+function msgBk(t) { $('#msgBk').textContent = t; }
+$('#bkSalvar').onclick = () => {
+  const dados = JSON.stringify({app: 'preco3d', versao: 1, data: new Date().toISOString(), cfg, hist}, null, 1);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([dados], {type: 'application/json'}));
+  a.download = 'preco3d-backup-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
+  msgBk('Backup salvo em Downloads. Guarde no Drive ou mande para você no WhatsApp.');
+};
+$('#bkAbrir').onclick = () => $('#bkArq').click();
+$('#bkArq').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (d.app !== 'preco3d' || !d.cfg) throw new Error();
+    if (!confirm(`Restaurar backup de ${new Date(d.data).toLocaleDateString('pt-BR')}? Os dados atuais serão substituídos.`)) return;
+    cfg = Object.assign(structuredClone(PADRAO), d.cfg); hist = d.hist || [];
+    salvaCfg(); gravar('calc3d.hist', hist); desenhaCfg(); montaSelects(); calc();
+    msgBk('✔ Backup restaurado: ' + hist.length + ' orçamento(s).');
+  } catch (err) { msgBk('✖ Esse arquivo não é um backup do Preço 3D.'); }
+  e.target.value = '';
+};
+
+// ---------- configuração inicial
+const IMPRESSORAS = [
+  ['Bambu Lab A1', 100, 3500], ['Bambu Lab A1 mini', 80, 2300], ['Bambu Lab P1S', 130, 5500],
+  ['Bambu Lab X1C', 140, 9000], ['Creality Ender 3 / V3', 120, 1500], ['Creality K1', 150, 3500],
+  ['Elegoo / Anycubic (FDM)', 120, 1800], ['Outra', 120, 2500]];
+function abreBoas() {
+  $('#wImp').innerHTML = IMPRESSORAS.map((p, i) => `<option value="${i}">${p[0]}</option>`).join('');
+  $('#wPla').value = cfg.fils[0].kg; $('#wKwh').value = cfg.kwh; $('#wLoja').value = cfg.loja; $('#wZap').value = cfg.zap;
+  $('#boas').classList.remove('hide');
+}
+$('#wOk').onclick = () => {
+  const p = IMPRESSORAS[+$('#wImp').value];
+  cfg.watts = p[1]; cfg.maqPreco = p[2];
+  cfg.fils[0].kg = num($('#wPla').value) || cfg.fils[0].kg;
+  cfg.kwh = num($('#wKwh').value) || cfg.kwh;
+  cfg.loja = $('#wLoja').value.trim(); cfg.zap = $('#wZap').value.trim();
+  salvaCfg(); desenhaCfg(); montaSelects(); calc();
+  $('#boas').classList.add('hide');
+};
+$('#refazer').onclick = abreBoas;
+
 preencheJob(); montaSelects(); desenhaCfg(); calc();
+if (primeiraVez) abreBoas();
+
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js');
 </script>
 </body>
