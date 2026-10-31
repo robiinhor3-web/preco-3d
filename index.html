@@ -12,30 +12,35 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Preço 3D">
 <style>
-:root{--bg:#f4f5f7;--card:#fff;--tx:#1b1f24;--mu:#6b7280;--bd:#e3e6ea;--ac:#0f9d6b;--ac2:#e7f6ef;--wa:#c2410c;
---c1:#2563eb;--c2:#f59e0b;--c3:#8b5cf6;--c4:#ef4444;--c5:#10b981;--c6:#64748b}
-@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1e24;--tx:#e8eaed;--mu:#9aa3ad;--bd:#2b313a;--ac:#34d399;--ac2:#13302a;--wa:#fb923c}}
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1b1f24;--mu:#6b7280;--bd:#e3e6ea;--ac:#0f9d6b;--ac2:#e7f6ef;--wa:#c2410c;--wa2:#fff4ec;
+--c1:#2563eb;--c2:#f59e0b;--c3:#8b5cf6;--c4:#ef4444;--c5:#10b981;--c6:#64748b;--c7:#ec4899;--c8:#0ea5e9}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1e24;--tx:#e8eaed;--mu:#9aa3ad;--bd:#2b313a;--ac:#34d399;--ac2:#13302a;--wa:#fb923c;--wa2:#33220f}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,Segoe UI,Roboto,sans-serif}
 header{display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--bd);background:var(--card);position:sticky;top:0;z-index:5}
 header h1{font-size:18px;margin:0}
-nav{display:flex;gap:4px;margin-left:auto}
+nav{display:flex;gap:4px}
 nav button{border:0;background:none;color:var(--mu);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
 nav button.on{background:var(--ac2);color:var(--ac);font-weight:600}
+#desfazer{margin-left:auto;padding:6px 10px}
 main{max-width:1150px;margin:0 auto;padding:20px 16px}
-.grid{display:grid;grid-template-columns:1fr 400px;gap:20px;align-items:start}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:1fr 410px;gap:20px;align-items:start}
+.grid>*{min-width:0}
+.grid2{grid-template-columns:1fr 1fr}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:16px}
 .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);margin:0 0 12px}
 label{display:block;font-size:13px;color:var(--mu);margin-bottom:4px}
 input,select{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+input[type=checkbox]{width:auto}
 input:focus,select:focus{outline:2px solid var(--ac);outline-offset:-1px}
 .row{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-bottom:10px}
-.fil{display:grid;grid-template-columns:1fr 110px 36px;gap:8px;margin-bottom:8px}
+.fil{display:grid;grid-template-columns:1fr 110px 36px;gap:8px;margin-bottom:8px;align-items:center}
 .fil4{grid-template-columns:1fr 130px 110px 36px}
 .btn{border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 12px;border-radius:8px;cursor:pointer;font:inherit}
 .btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
-.btn.x{padding:0;color:var(--mu)}
+.btn.x{padding:0;color:var(--mu);height:36px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btns .btn{flex:1}
 .drop{border:2px dashed var(--bd);border-radius:12px;padding:18px;text-align:center;color:var(--mu);cursor:pointer;margin-bottom:16px}
 .drop.hov{border-color:var(--ac);background:var(--ac2)}
 .drop b{color:var(--tx)}
@@ -43,47 +48,74 @@ input:focus,select:focus{outline:2px solid var(--ac);outline-offset:-1px}
 .big{font-size:34px;font-weight:700;color:var(--ac);line-height:1.1}
 .mu{color:var(--mu);font-size:13px}
 .bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:12px 0 8px;background:var(--bd)}
-.lin{display:flex;justify-content:space-between;padding:3px 0;font-size:14px}
+.lin{display:flex;justify-content:space-between;padding:3px 0;font-size:14px;gap:8px}
 .lin i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
 table{width:100%;border-collapse:collapse;font-size:14px}
 td,th{padding:7px 4px;border-bottom:1px solid var(--bd);text-align:right}
 td:first-child,th:first-child{text-align:left}
 th{color:var(--mu);font-weight:500;font-size:12px}
+tr.sel{background:var(--ac2)}
 .pr{font-weight:700}
 .neg{color:var(--c4)}
 .msg{font-size:13px;margin-top:8px;color:var(--ac);min-height:18px}
-.hist{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
-.hide{display:none}
-.grid2{grid-template-columns:1fr 1fr}
-.grid>*{min-width:0}
-@media (max-width:900px){.res{position:static}.grid2{grid-template-columns:1fr}}
-@media (max-width:600px){header{flex-wrap:wrap;gap:8px;padding:10px 12px}nav{margin-left:0;width:100%}nav button{flex:1}
-  main{padding:14px 12px}input,select{font-size:16px}.fil4{grid-template-columns:1fr 1fr 36px}.fil4 select{grid-column:1/-1}
-  .fil4>label:first-child,.fil4>span{display:none}.hist{grid-template-columns:1fr auto auto}.hist>b{grid-column:1/-1}}
+.hist{display:grid;grid-template-columns:1fr auto 130px auto 36px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}
+.hide{display:none!important}
+.mesa{border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:10px}
+.mesa.simples{border:0;padding:0}
+.mtop{display:grid;grid-template-columns:1fr 70px 70px 70px 36px;gap:8px;align-items:end;margin-bottom:8px}
+.mesa.simples .mtop{grid-template-columns:1fr 1fr}
+.mtop label{margin:0}
+.info{font-size:13px;color:var(--mu);white-space:nowrap}
+.cab{margin-bottom:2px}
+.cab label{margin:0}
+.chk{display:flex;gap:8px;align-items:center;color:var(--tx);font-size:14px;margin:0}
+.aviso{background:var(--wa2);border:1px solid var(--wa);color:var(--tx);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.aviso span{flex:1;min-width:200px}
+.st-aprovado{color:var(--c1)} .st-entregue{color:var(--ac)} .st-perdido{color:var(--mu)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px}
+.kpi div{background:var(--bg);border-radius:10px;padding:10px}
+.kpi b{display:block;font-size:20px}
+.barra{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:10px 16px;display:flex;align-items:center;gap:12px;z-index:6;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
+.barra div{flex:1;min-width:0}
+.barra b{font-size:22px;color:var(--ac);display:block;line-height:1.1}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
-.modal.hide{display:none}
 .modal .card{max-width:480px;width:100%;max-height:92vh;overflow:auto;margin:0}
 .modal h3{margin:0 0 4px;font-size:20px}
+details>summary{cursor:pointer;color:var(--ac);font-weight:600;margin-bottom:10px}
 small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
+@media (min-width:901px){.barra{display:none!important}}
+@media (max-width:900px){.grid,.grid2{grid-template-columns:1fr}.res{position:static}body.calc{padding-bottom:72px}}
+@media (max-width:600px){
+  header{flex-wrap:wrap;gap:8px;padding:10px 12px}nav{width:100%}nav button{flex:1;padding:8px 4px}
+  main{padding:14px 12px}input,select{font-size:16px}
+  .fil4{grid-template-columns:1fr 1fr 36px}.fil4 select{grid-column:1/-1}.fil4.cab>label:first-child,.fil4.cab>span{display:none}
+  .mtop{grid-template-columns:1fr 1fr 1fr 36px}.mtop>b{grid-column:1/-1}
+  .lst{grid-template-columns:repeat(var(--n),minmax(0,1fr)) 36px!important}.lst>:first-child{grid-column:1/-1}.fil input{padding:8px 6px}
+  .hist{grid-template-columns:auto minmax(0,1fr) auto 36px}.hist>:first-child{grid-column:1/-1}
+  .big{font-size:30px}
+}
 </style>
 </head>
-<body>
+<body class="calc">
 <header>
   <h1><img src="icons/icon-192.png" alt="" style="width:26px;height:26px;border-radius:6px;vertical-align:-6px;margin-right:6px">Preço 3D</h1>
+  <button class="btn" id="desfazer" title="Desfazer (Ctrl+Z)">↶ Desfazer</button>
   <nav>
     <button data-tab="calc" class="on">Calcular</button>
     <button data-tab="hist">Orçamentos</button>
-    <button data-tab="cfg">Configurações</button>
+    <button data-tab="cfg">Custos</button>
+    <button data-tab="perfil">Perfil</button>
   </nav>
 </header>
 <main>
+<div class="aviso hide" id="lembrete"><span id="lembreteTxt"></span><button class="btn pri" id="lembreteOk">Fazer backup</button><button class="btn" id="lembreteDepois">Depois</button></div>
 
 <!-- ================= CALCULAR ================= -->
 <section id="tab-calc">
 <div class="grid">
 <div>
   <div class="drop" id="drop">
-    <b>Arraste aqui o arquivo fatiado</b> (.gcode.3mf ou .gcode do Bambu Studio)<br>
+    <b>Arraste aqui o arquivo fatiado</b> (.gcode.3mf do Bambu/Orca ou .gcode do Bambu, Orca, Prusa ou Cura)<br>
     <span class="mu">ou clique para escolher. Peso e tempo são preenchidos sozinhos.</span>
     <input type="file" id="arq" accept=".3mf,.gcode" hidden>
     <div class="msg" id="msgArq"></div>
@@ -92,35 +124,51 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
   <div class="card">
     <h2>Peça</h2>
     <div class="row">
-      <div style="grid-column:span 2"><label>Nome / cliente</label><input id="nome" placeholder="Ex.: Caixa ondulada - Kamila"></div>
-      <div><label>Peças na impressão</label><input id="qtd" type="number" min="1" value="1"><small class="h">divide o custo</small></div>
+      <div style="grid-column:1/-1"><label for="nome">Nome / cliente</label><input id="nome" placeholder="Ex.: Caixa ondulada - Kamila"></div>
     </div>
     <div class="row">
-      <div><label>Tempo (horas)</label><input id="hh" type="number" min="0" value="0"></div>
-      <div><label>Tempo (minutos)</label><input id="mm" type="number" min="0" value="0"></div>
-      <div><label>Canal de venda</label><select id="canal"></select></div>
+      <div><label for="qtd">Peças que saem da impressão</label><input id="qtd" type="number" min="1" value="1"><small class="h">somando todas as mesas</small></div>
+      <div><label for="ped">Quantidade do pedido</label><input id="ped" type="number" min="1" value="1"><small class="h">quantas o cliente quer</small></div>
+      <div><label for="canal">Canal de venda</label><select id="canal"></select></div>
     </div>
   </div>
 
   <div class="card">
-    <h2>Filamento e peso</h2>
-    <div class="mu" style="margin-bottom:10px">Coloque quanto você pagou no rolo de 1 kg e o peso em gramas que o Bambu mostra no fatiamento. O preço fica salvo para as próximas vezes.</div>
-    <div id="fils"></div>
-    <button class="btn" id="addFil">+ cor / material</button>
+    <h2>Tempo, material e peso</h2>
+    <div class="mu" style="margin-bottom:10px" id="mesasTxt"></div>
+    <div id="mesas"></div>
+    <div class="btns" style="justify-content:flex-start">
+      <button class="btn" id="addMesa" style="flex:0 1 auto">+ mesa</button>
+      <button class="btn" id="multi" style="flex:0 1 auto"></button>
+    </div>
+    <div class="msg" id="msgFil"></div>
   </div>
 
   <div class="card">
-    <h2>Extras</h2>
+    <h2>Insumos</h2>
+    <div class="mu" style="margin-bottom:10px">Argolas, ímãs, embalagem… Itens "por peça" contam em cada peça; itens "por pedido" (caixa, cartão) contam uma vez no pedido. Cadastre e ajuste os preços em Custos.</div>
+    <div id="ins"></div>
+    <button class="btn" id="addIns">+ insumo</button>
+  </div>
+
+  <div class="card">
+    <h2>Extras e lucro</h2>
     <div class="row">
-      <div><label>Mão de obra (min)</label><input id="mo" type="number" min="0" value="0"><small class="h">acabamento, montagem, pintura</small></div>
-      <div><label>Extras (R$)</label><input id="ext" type="number" min="0" step="0.01" value="0"><small class="h">ímãs, parafusos, embalagem</small></div>
-      <div><label>Margem de lucro (%)</label><input id="mar" type="number" min="0" value="100"></div>
+      <div><label for="mo">Mão de obra (min)</label><input id="mo" type="number" min="0" value="0"><small class="h">acabamento, montagem, pintura</small></div>
+      <div><label for="ext">Outros gastos (R$)</label><input id="ext" type="number" min="0" step="0.01" value="0"><small class="h">algo fora da lista de insumos</small></div>
+      <div><label for="frete">Frete grátis pago por você (R$)</label><input id="frete" type="number" min="0" step="0.01" value="0"><small class="h">por pedido; só nos canais que cobram (ML, Magalu acima de R$ 79)</small></div>
+    </div>
+    <div class="row">
+      <div><label for="mar">Lucro desejado (%)</label><input id="mar" type="number" min="0" value="100"></div>
+      <div><label for="marTipo">Calculado sobre</label><select id="marTipo">
+        <option value="custo">o custo (100% = dobro do custo)</option>
+        <option value="preco">o preço de venda (margem real)</option></select></div>
     </div>
   </div>
 </div>
 
 <div class="res">
-  <div class="card">
+  <div class="card" id="resCard">
     <h2>Preço sugerido (unidade)</h2>
     <div class="big" id="preco">R$ 0,00</div>
     <div class="mu" id="sub"></div>
@@ -129,25 +177,48 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
   </div>
   <div class="card">
     <h2>Por canal</h2>
-    <table><thead><tr><th>Canal</th><th>Preço</th><th>Taxas</th><th>Lucro</th></tr></thead><tbody id="canais"></tbody></table>
+    <table><thead><tr><th>Canal</th><th>Preço</th><th>Taxas</th><th>Lucro</th><th title="lucro por hora de impressora">R$/h</th></tr></thead><tbody id="canais"></tbody></table>
+    <div class="mu" style="margin-top:6px">R$/h = lucro por hora de impressora. Toque num canal para escolher.</div>
+  </div>
+  <div class="card">
+    <h2>Atacado (canal escolhido)</h2>
+    <table><thead><tr><th>Qtd</th><th>Desc.</th><th>Unidade</th><th>Total</th><th>Lucro/un</th></tr></thead><tbody id="atac"></tbody></table>
+    <div class="mu" style="margin-top:6px">Os descontos por quantidade ficam em Custos. Toque numa linha para usar essa quantidade.</div>
   </div>
   <button class="btn pri" id="enviar" style="width:100%;margin-bottom:8px">📤 Enviar orçamento (imagem)</button>
-  <div style="display:flex;gap:8px">
-    <button class="btn" id="salvar" style="flex:1">Salvar orçamento</button>
-    <button class="btn" id="copiar" style="flex:1">Copiar texto</button>
+  <div class="btns">
+    <button class="btn" id="salvar">Salvar</button>
+    <button class="btn" id="copiar">Copiar texto</button>
+    <button class="btn" id="addPed">+ Pedido</button>
   </div>
   <div class="msg" id="msg"></div>
+  <div class="card hide" id="pedCard" style="margin-top:8px">
+    <h2>Pedido com várias peças</h2>
+    <div id="pedLista"></div>
+    <div class="btns" style="margin-top:10px">
+      <button class="btn pri" id="pedEnviar">📤 Enviar pedido</button>
+      <button class="btn" id="pedSalvar">Salvar</button>
+      <button class="btn" id="pedCopiar">Copiar</button>
+      <button class="btn" id="pedLimpar">Limpar</button>
+    </div>
+  </div>
 </div>
 </div>
 </section>
 
-<!-- ================= HISTÓRICO ================= -->
+<!-- ================= ORÇAMENTOS ================= -->
 <section id="tab-hist" class="hide">
+  <div class="card">
+    <h2>Resumo do mês</h2>
+    <select id="mes" style="max-width:240px"></select>
+    <div class="kpi" id="kpi"></div>
+    <div class="mu" style="margin-top:8px">Faturamento e lucro contam só orçamentos aprovados ou entregues.</div>
+  </div>
   <div class="card"><h2>Orçamentos salvos</h2><div id="lista"></div></div>
 </section>
 
-<!-- ================= CONFIG ================= -->
-<section id="tab-cfg" class="hide">
+<!-- ================= PERFIL ================= -->
+<section id="tab-perfil" class="hide">
 <div class="grid grid2">
   <div class="card">
     <h2>Sua loja (aparece no orçamento)</h2>
@@ -163,59 +234,100 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
   </div>
   <div class="card">
     <h2>Backup</h2>
-    <div class="mu" style="margin-bottom:10px">Seus preços e orçamentos ficam só neste aparelho. Faça um backup antes de trocar de celular ou limpar os dados.</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <div class="mu" style="margin-bottom:10px">Seus preços e orçamentos ficam só neste aparelho. O backup gera um arquivo: no celular, salve no Google Drive ou mande para você no WhatsApp. O app avisa quando fizer 15 dias sem backup.</div>
+    <div class="btns">
       <button class="btn pri" id="bkSalvar">Salvar backup</button>
       <button class="btn" id="bkAbrir">Restaurar backup</button>
-      <button class="btn" id="refazer">Refazer configuração inicial</button>
     </div>
+    <button class="btn" id="refazer" style="width:100%;margin-top:8px">Refazer configuração inicial</button>
     <input type="file" id="bkArq" accept=".json,application/json" hidden>
     <div class="msg" id="msgBk"></div>
   </div>
+  <div class="mu" style="grid-column:1/-1;text-align:center"><a href="privacidade.html" style="color:var(--mu)">Política de privacidade</a> · Preço 3D v1.3</div>
+</div>
+</section>
+
+<!-- ================= CUSTOS ================= -->
+<section id="tab-cfg" class="hide">
+<div class="grid grid2">
   <div class="card">
-    <h2>Filamentos (preço do rolo de 1 kg)</h2>
+    <h2>Materiais (rolo 1 kg / frasco 1 L)</h2>
+    <details><summary id="sumFils"></summary>
     <div id="cfgFils"></div>
-    <button class="btn" id="cfgAddFil">+ filamento</button>
+    <button class="btn" id="cfgAddFil">+ material</button></details>
   </div>
   <div class="card">
-    <h2>Impressora e energia</h2>
-    <div class="row">
-      <div><label>Preço da impressora (R$)</label><input data-c="maqPreco" type="number"></div>
-      <div><label>Vida útil (horas)</label><input data-c="maqVida" type="number"></div>
-    </div>
-    <div class="row">
+    <h2>Impressoras</h2>
+    <div class="mu" style="margin-bottom:10px">Preço, vida útil (horas) e consumo médio (W). Com mais de uma, cada mesa escolhe a sua.</div>
+    <div id="cfgImps"></div>
+    <button class="btn" id="cfgAddImp">+ impressora</button>
+    <div class="row" style="margin-top:12px">
       <div><label>Manutenção (R$/hora)</label><input data-c="manut" type="number" step="0.01"><small class="h">bico, PEI, correias…</small></div>
-      <div><label>Consumo médio (W)</label><input data-c="watts" type="number"><small class="h">A1 em PLA ≈ 100 W</small></div>
-      <div><label>Energia (R$/kWh)</label><input data-c="kwh" type="number" step="0.01"></div>
+      <div><label>Energia (R$/kWh)</label><input data-c="kwh" type="number" step="0.01"><small class="h">vem na conta de luz</small></div>
     </div>
+  </div>
+  <div class="card">
+    <h2>Trabalho e perdas</h2>
     <div class="row">
       <div><label>Mão de obra (R$/hora)</label><input data-c="moHora" type="number" step="0.5"></div>
       <div><label>Taxa de falha (%)</label><input data-c="falha" type="number"><small class="h">impressões perdidas</small></div>
-      <div><label>Desperdício filamento (%)</label><input data-c="desp" type="number"><small class="h">purga, brim, suporte</small></div>
+      <div><label>Desperdício de material (%)</label><input data-c="desp" type="number"><small class="h">purga, brim, suporte</small></div>
     </div>
-    <label style="display:flex;gap:8px;align-items:center;color:var(--tx)"><input data-c="arred" type="checkbox" style="width:auto"> Arredondar preço para final ,90</label>
+    <label class="chk"><input data-c="arred" type="checkbox"> Arredondar preço para final ,90</label>
+  </div>
+  <div class="card">
+    <h2>Custos fixos e imposto</h2>
+    <div class="mu" style="margin-bottom:10px">Gastos de todo mês. São divididos pelas horas que suas impressoras trabalham no mês e entram no custo de cada peça.</div>
+    <div id="cfgFixos"></div>
+    <button class="btn" id="cfgAddFixo">+ custo fixo</button>
+    <div class="row" style="margin-top:12px">
+      <div><label>Horas de impressão por mês</label><input data-c="horasMes" type="number"><small class="h">todas as impressoras somadas</small></div>
+      <div><label>Imposto sobre a venda (%)</label><input data-c="imposto" type="number" step="0.1"><small class="h">MEI: 0 (já paga o DAS) · Simples ≈ 6</small></div>
+    </div>
+    <div class="msg" id="fixoHora"></div>
+  </div>
+  <div class="card">
+    <h2>Insumos (preço do pacote)</h2>
+    <div class="mu" style="margin-bottom:10px">Quanto você pagou e quantas unidades vieram (ou quantos usos rende). Os preços que vêm aqui são médias: ajuste para os seus.</div>
+    <details><summary id="sumIns"></summary>
+    <div id="cfgIns"></div>
+    <button class="btn" id="cfgAddIns">+ insumo</button></details>
+  </div>
+  <div class="card">
+    <h2>Desconto de atacado</h2>
+    <div class="mu" style="margin-bottom:10px">A partir de quantas unidades no pedido, quanto de desconto no preço.</div>
+    <div id="cfgAtac"></div>
+    <button class="btn" id="cfgAddAtac">+ faixa</button>
   </div>
   <div class="card" style="grid-column:1/-1">
     <h2>Canais de venda (taxas)</h2>
-    <div class="mu" style="margin-bottom:10px">Confira as taxas atuais nas plataformas, elas mudam. % = comissão sobre o preço; fixo = valor por item vendido.</div>
+    <div class="mu" style="margin-bottom:10px">% = comissão sobre o preço; fixo = valor por item vendido; "frete" = nessa faixa você paga o frete grátis (valor em Calcular). O app escolhe a faixa certa pelo preço. Desmarque "mostrar" nos canais que você não usa. <span id="taxasInfo"></span></div>
     <div id="cfgCanais"></div>
     <button class="btn" id="cfgAddCanal">+ canal</button>
   </div>
-  <div class="mu" style="grid-column:1/-1;text-align:center"><a href="privacidade.html" style="color:var(--mu)">Política de privacidade</a> · Preço 3D v1.1</div>
 </div>
 </section>
 </main>
 
+<div class="barra hide" id="barra"><div><b id="bPreco"></b><span class="mu" id="bSub"></span></div><button class="btn" id="bVer">Detalhes</button></div>
+
 <div class="modal hide" id="boas">
   <div class="card">
     <h3>Bem-vindo ao Preço 3D 👋</h3>
-    <div class="mu" style="margin-bottom:14px">Responda rapidinho para os preços saírem certos. Dá para mudar tudo depois em Configurações.</div>
+    <div class="mu" style="margin-bottom:14px">Responda rapidinho para os preços saírem certos. Dá para mudar tudo depois em Custos.</div>
     <label>Sua impressora</label>
     <select id="wImp" style="margin-bottom:10px"></select>
     <div class="row">
       <div><label>Preço do rolo de PLA 1 kg (R$)</label><input id="wPla" type="number" step="0.01"></div>
       <div><label>Energia (R$/kWh)</label><input id="wKwh" type="number" step="0.01"><small class="h">vem na conta de luz; média ≈ 0,95</small></div>
     </div>
+    <div class="row">
+      <div><label>Você vende como</label><select id="wReg">
+        <option value="mei">MEI</option><option value="simples">Empresa (Simples)</option><option value="pf">Pessoa física</option></select></div>
+      <div><label>Horas de impressão por mês</label><input id="wHoras" type="number"><small class="h">chute: 4 h/dia ≈ 120</small></div>
+    </div>
+    <label>Onde você vende</label>
+    <div id="wCanais" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px"></div>
     <div class="row">
       <div><label>Nome da loja (opcional)</label><input id="wLoja"></div>
       <div><label>WhatsApp (opcional)</label><input id="wZap" type="tel"></div>
@@ -224,225 +336,417 @@ small.h{display:block;color:var(--mu);font-size:12px;margin-top:3px}
   </div>
 </div>
 
+<script src="calculo.js"></script>
 <script>
 const $ = s => document.querySelector(s);
+const {num, uid, clone, migraCfg, migraJob, aplicaTaxas, acha, insUnit, fixoHora, conta, lerGcode, TAXAS} = Calc;
 const brl = v => (isFinite(v) ? v : 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-const num = v => parseFloat(String(v).replace(',', '.')) || 0;
-
-const PADRAO = {
-  fils: [{nome: 'PLA', kg: 100}, {nome: 'PETG', kg: 110}, {nome: 'PLA Silk', kg: 130}, {nome: 'TPU', kg: 180}],
-  maqPreco: 3500, maqVida: 5000, manut: 0.30, watts: 100, kwh: 0.95,
-  moHora: 20, falha: 10, desp: 5, arred: true,
-  loja: '', zap: '', insta: '', prazo: '', validade: 7,
-  canais: [{nome: 'Venda direta', pct: 0, fixo: 0}, {nome: 'Shopee', pct: 20, fixo: 4},
-           {nome: 'Mercado Livre', pct: 14, fixo: 6.75}]
-};
+const esc = t => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 function ler(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
 function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
 const primeiraVez = !ler('calc3d.cfg', null);
-let cfg = Object.assign(structuredClone(PADRAO), ler('calc3d.cfg', {}));
-let hist = ler('calc3d.hist', []);
-let job = ler('calc3d.job', null) || {fils: [{i: 0, g: 0}]};
+let cfg = migraCfg(ler('calc3d.cfg', {}));
+let job = migraJob(ler('calc3d.job', null) || {}, cfg);
+function migraHist(h) {
+  if (h.job && h.job.nome === undefined) h.job.nome = h.nome;
+  if (h.job) migraJob(h.job, cfg);
+  (h.itens || []).forEach(i => i.job && migraJob(i.job, cfg));
+  if (!h.id) h.id = uid();
+  if (!h.status) h.status = 'enviado';
+  if (h.lucro === undefined) h.lucro = h.preco - h.custo;
+  if (!h.ts) { const [d, m, a] = String(h.data).split('/'); h.ts = +new Date(+a, m - 1, +d) || Date.now(); }
+  return h;
+}
+let hist = ler('calc3d.hist', []).map(migraHist);
+let pedido = ler('calc3d.pedido', []);
+gravar('calc3d.cfg', cfg); gravar('calc3d.hist', hist);
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 
-// ---------- abas
-document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
-  ['calc', 'hist', 'cfg'].forEach(t => $('#tab-' + t).classList.toggle('hide', t !== b.dataset.tab));
-  if (b.dataset.tab === 'hist') desenhaHist();
-  if (b.dataset.tab === 'calc') { montaSelects(); calc(); }
-});
+function aviso(t, sel = '#msg') { const e = $(sel); e.textContent = t; clearTimeout(e._t); e._t = setTimeout(() => e.textContent = '', 3500); }
 
-// ---------- filamentos da peça
-function desenhaFils() {
-  $('#fils').innerHTML = '<div class="fil fil4" style="margin-bottom:2px"><label>Material</label><label>Preço do rolo 1 kg (R$)</label><label>Peso (gramas)</label><span></span></div>';
-  job.fils.forEach((f, k) => {
+// ---------- abas (cada aba entra no histórico: o botão voltar do celular volta para a aba anterior)
+let aba = 'calc';
+function abreAba(t, empilha = true) {
+  aba = t;
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.tab === t));
+  ['calc', 'hist', 'cfg', 'perfil'].forEach(k => $('#tab-' + k).classList.toggle('hide', k !== t));
+  document.body.classList.toggle('calc', t === 'calc');
+  if (t === 'hist') desenhaHist();
+  if (t === 'calc') { montaSelects(); calc(); }
+  if (empilha && history.state?.t !== t) history.pushState({t}, '');
+  barra();
+  scrollTo(0, 0);
+}
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => abreAba(b.dataset.tab));
+history.replaceState({t: 'calc'}, '');
+onpopstate = e => abreAba(e.state?.t || 'calc', false);
+
+// ---------- mesas da peça
+const opcoes = (arr, sel, rot = x => esc(x.nome)) => arr.map(x => `<option value="${esc(x.id)}" ${x.id === sel ? 'selected' : ''}>${rot(x)}</option>`).join('');
+function linhaFil(m, f, k) {
+  const d = document.createElement('div');
+  d.className = 'fil fil4';
+  const mat = acha(cfg.fils, f.id);
+  d.innerHTML = `<select aria-label="Material">${opcoes(cfg.fils, mat.id)}</select>
+    <input type="number" min="0" step="0.01" value="${num(mat.kg)}" aria-label="Preço do rolo ou frasco" title="vale para todo ${esc(mat.nome)} (fica salvo)">
+    <input type="number" min="0" step="0.1" value="${num(f.g)}" placeholder="gramas" aria-label="Peso em gramas">
+    <button class="btn x" title="remover">✕</button>`;
+  const [s, pr, g, x] = d.children;
+  s.onchange = () => { f.id = s.value; pr.value = num(acha(cfg.fils, f.id).kg); calc(); };
+  pr.oninput = () => {
+    const it = acha(cfg.fils, f.id);
+    it.kg = num(pr.value); salvaCfg(); calc();
+    aviso(`Preço do ${it.nome} salvo em Custos: vale para os próximos cálculos.`, '#msgFil');
+  };
+  g.oninput = () => { f.g = num(g.value); calc(); };
+  x.onclick = () => { if (m.fils.length > 1) { m.fils.splice(k, 1); desenhaMesas(); calc(); } };
+  return d;
+}
+function desenhaMesas() {
+  const multi = job.multi || job.mesas.length > 1;
+  $('#mesasTxt').textContent = multi
+    ? 'Multipartes: uma mesa para cada placa, com o tempo e os gramas que o fatiador mostra. Se a mesma placa for impressa mais de uma vez, mude "Vezes".'
+    : 'Tempo e gramas que o fatiador mostra, e quanto você pagou no rolo de 1 kg (ou frasco de 1 L de resina).';
+  $('#addMesa').classList.toggle('hide', !multi);
+  $('#multi').textContent = multi ? 'Voltar para uma mesa' : '⊞ Várias mesas (multipartes)';
+  const box = $('#mesas'); box.innerHTML = '';
+  job.mesas.forEach((m, mi) => {
     const d = document.createElement('div');
-    d.className = 'fil fil4';
-    d.innerHTML = `<select>${cfg.fils.map((c, i) => `<option value="${i}" ${i == f.i ? 'selected' : ''}>${c.nome}</option>`).join('')}</select>
-      <input type="number" min="0" step="0.01" value="${cfg.fils[f.i].kg}" title="vale para todo ${cfg.fils[f.i].nome} (fica salvo)">
-      <input type="number" min="0" step="0.1" value="${f.g}" placeholder="gramas">
-      <button class="btn x" title="remover">✕</button>`;
-    const [s, pr, g, x] = d.children;
-    s.onchange = () => { f.i = +s.value; pr.value = cfg.fils[f.i].kg; calc(); };
-    pr.oninput = () => { cfg.fils[f.i].kg = num(pr.value); salvaCfg(); desenhaCfg(); calc(); };
-    g.oninput = () => { f.g = num(g.value); calc(); };
-    x.onclick = () => { if (job.fils.length > 1) { job.fils.splice(k, 1); desenhaFils(); calc(); } };
-    $('#fils').appendChild(d);
+    d.className = 'mesa' + (multi ? '' : ' simples');
+    d.innerHTML = `<div class="mtop">${multi ? `<b>Mesa ${mi + 1}</b>` : ''}
+      <div><label>Horas</label><input type="number" min="0" data-k="hh" value="${num(m.hh)}"></div>
+      <div><label>Minutos</label><input type="number" min="0" data-k="mm" value="${num(m.mm)}"></div>
+      ${multi ? `<div><label>Vezes</label><input type="number" min="1" data-k="vz" value="${num(m.vz) || 1}"></div>
+      <button class="btn x" title="remover mesa">✕</button>` : ''}</div>
+      ${cfg.imps.length > 1 ? `<select data-imp style="margin-bottom:8px" aria-label="Impressora">${opcoes(cfg.imps, m.imp)}</select>` : ''}
+      <div class="fil fil4 cab"><label>Material</label><label>Rolo 1 kg / 1 L (R$)</label><label>Peso (g ou ml)</label><span></span></div>`;
+    d.querySelectorAll('[data-k]').forEach(e => e.oninput = () => { m[e.dataset.k] = num(e.value); calc(); });
+    const si = d.querySelector('[data-imp]');
+    if (si) si.onchange = () => { m.imp = si.value; calc(); };
+    const del = d.querySelector('.mtop .btn');
+    if (del) del.onclick = () => { if (job.mesas.length > 1) { job.mesas.splice(mi, 1); desenhaMesas(); calc(); } };
+    m.fils.forEach((f, k) => d.appendChild(linhaFil(m, f, k)));
+    const add = document.createElement('button');
+    add.className = 'btn'; add.textContent = '+ cor / material';
+    add.onclick = () => { m.fils.push({id: cfg.fils[0].id, g: 0}); desenhaMesas(); };
+    d.appendChild(add);
+    box.appendChild(d);
   });
 }
-$('#addFil').onclick = () => { job.fils.push({i: 0, g: 0}); desenhaFils(); };
+$('#addMesa').onclick = () => { job.mesas.push({hh: 0, mm: 0, vz: 1, imp: cfg.imps[0].id, fils: [{id: cfg.fils[0].id, g: 0}]}); desenhaMesas(); calc(); };
+$('#multi').onclick = () => {
+  if (job.multi || job.mesas.length > 1) {
+    if (job.mesas.length > 1 && !confirm('Ficar só com a Mesa 1? As outras mesas serão apagadas (dá para desfazer).')) return;
+    job.multi = false; job.mesas.splice(1); job.mesas[0].vz = 1;
+  } else job.multi = true;
+  desenhaMesas(); calc();
+};
+
+// ---------- insumos da peça
+const modoTxt = it => it && it.modo === 'pedido' ? 'por pedido' : 'por peça';
+function desenhaIns() {
+  const box = $('#ins'); box.innerHTML = '';
+  if (!cfg.insumos.length) box.innerHTML = '<div class="mu" style="margin-bottom:8px">Cadastre insumos em Custos.</div>';
+  job.ins.forEach((x, k) => {
+    const d = document.createElement('div');
+    d.className = 'fil';
+    d.style.gridTemplateColumns = 'minmax(0,1fr) 64px 80px 36px';
+    d.innerHTML = `<select aria-label="Insumo">${opcoes(cfg.insumos, x.id, c => `${esc(c.nome)} — ${brl(insUnit(c))}`)}</select>
+      <input type="number" min="0" step="1" value="${num(x.q)}" aria-label="Quantidade">
+      <span class="info">${modoTxt(acha(cfg.insumos, x.id))}</span>
+      <button class="btn x" title="remover">✕</button>`;
+    const [s, q, inf, b] = d.children;
+    s.onchange = () => { x.id = s.value; inf.textContent = modoTxt(acha(cfg.insumos, x.id)); calc(); };
+    q.oninput = () => { x.q = num(q.value); calc(); };
+    b.onclick = () => { job.ins.splice(k, 1); desenhaIns(); calc(); };
+    box.appendChild(d);
+  });
+}
+$('#addIns').onclick = () => { if (cfg.insumos.length) { job.ins.push({id: cfg.insumos[0].id, q: 1}); desenhaIns(); calc(); } else desenhaIns(); };
 
 function montaSelects() {
-  const c = $('#canal'), v = c.value || job.canal || 0;
-  c.innerHTML = cfg.canais.map((k, i) => `<option value="${i}">${k.nome}</option>`).join('');
-  c.value = Math.min(+v, cfg.canais.length - 1);
-  job.fils.forEach(f => { if (f.i >= cfg.fils.length) f.i = 0; });
-  desenhaFils();
+  const ativos = cfg.canais.filter(k => !k.off);
+  const lista = ativos.length ? ativos : cfg.canais;
+  if (!lista.some(k => k.id === job.canal)) job.canal = lista[0].id;
+  $('#canal').innerHTML = opcoes(lista, job.canal);
+  job.mesas.forEach(m => {
+    m.fils.forEach(f => { if (!cfg.fils.some(x => x.id === f.id)) f.id = cfg.fils[0].id; });
+    if (!cfg.imps.some(x => x.id === m.imp)) m.imp = cfg.imps[0].id;
+  });
+  job.ins = job.ins.filter(x => cfg.insumos.some(i => i.id === x.id));
+  desenhaMesas(); desenhaIns();
 }
 
 // ---------- cálculo
-const CAMPOS = ['nome', 'qtd', 'hh', 'mm', 'mo', 'ext', 'mar', 'canal'];
+const CAMPOS = ['nome', 'qtd', 'ped', 'canal', 'mo', 'ext', 'frete', 'mar', 'marTipo'];
 function lerJob() { CAMPOS.forEach(k => job[k] = $('#' + k).value); }
 function preencheJob() { CAMPOS.forEach(k => { if (job[k] !== undefined) $('#' + k).value = job[k]; }); }
-
-function arredonda(p) {
-  if (!cfg.arred || p <= 0) return p;
-  const c = Math.ceil(p) - 0.10;
-  return c >= p - 1e-9 ? c : c + 1;
-}
-function precoCanal(liq, k) { return (liq + num(k.fixo)) / (1 - num(k.pct) / 100); }
-
-function conta() {
-  const qtd = Math.max(1, num(job.qtd));
-  const horas = num(job.hh) + num(job.mm) / 60;
-  const gramas = job.fils.reduce((s, f) => s + num(f.g), 0);
-  const mat = job.fils.reduce((s, f) => s + num(f.g) / 1000 * num((cfg.fils[f.i] || cfg.fils[0]).kg), 0) * (1 + num(cfg.desp) / 100);
-  const ene = horas * num(cfg.watts) / 1000 * num(cfg.kwh);
-  const maq = horas * (num(cfg.maqPreco) / Math.max(1, num(cfg.maqVida)) + num(cfg.manut));
-  const fal = (mat + ene + maq) * num(cfg.falha) / 100;
-  const mo = num(job.mo) / 60 * num(cfg.moHora);
-  const ext = num(job.ext);
-  const total = mat + ene + maq + fal + mo + ext;
-  const unit = total / qtd;
-  const liq = unit * (1 + num(job.mar) / 100);
-  const canais = cfg.canais.map(k => {
-    const p = arredonda(precoCanal(liq, k));
-    const taxa = p * num(k.pct) / 100 + num(k.fixo);
-    return {nome: k.nome, p, taxa, lucro: p - taxa - unit};
-  });
-  return {qtd, horas, gramas, partes: [['Filamento', mat, 'c1'], ['Energia', ene, 'c2'], ['Impressora', maq, 'c3'],
-    ['Falhas', fal, 'c4'], ['Mão de obra', mo, 'c5'], ['Extras', ext, 'c6']], total, unit, canais};
-}
+const hm = h => `${Math.floor(h)}h${String(Math.round(h % 1 * 60)).padStart(2, '0')}`;
 
 let ultimo;
+const escolhido = r => r.canais.find(k => k.id === job.canal) || r.canais[0];
 function calc() {
   lerJob(); gravar('calc3d.job', job);
-  const r = ultimo = conta();
-  const ci = Math.min(num(job.canal), r.canais.length - 1);
-  const c = r.canais[ci];
+  const r = ultimo = conta(job, cfg);
+  const c = escolhido(r);
   $('#preco').textContent = brl(c.p);
-  $('#sub').textContent = `${c.nome} · custo ${brl(r.unit)} · lucro ${brl(c.lucro)} por peça`;
-  $('#bar').innerHTML = r.partes.filter(p => p[1] > 0).map(p => `<div style="width:${p[1] / r.total * 100}%;background:var(--${p[2]})"></div>`).join('');
-  $('#det').innerHTML = r.partes.map(p => `<div class="lin"><span><i style="background:var(--${p[2]})"></i>${p[0]}</span><span>${brl(p[1] / r.qtd)}</span></div>`).join('') +
+  $('#sub').innerHTML = `${esc(c.nome)} · custo ${brl(r.unit)} · lucro <b class="${c.lucro < 0 ? 'neg' : ''}">${brl(c.lucro)}</b> por peça` +
+    (r.horas ? ` · ${brl(c.lucroHora)} por hora de impressora` : '') +
+    (r.ped > 1 ? `<br>Pedido: ${r.ped} × ${brl(c.p)} = <b>${brl(c.p * r.ped)}</b>${r.desc ? ` (${r.desc}% de desconto de atacado)` : ''}` : '');
+  const total = r.partes.reduce((s, p) => s + p[1], 0);
+  $('#bar').innerHTML = r.partes.filter(p => p[1] > 0).map(p => `<div style="width:${p[1] / total * 100}%;background:var(--${p[2]})"></div>`).join('');
+  $('#det').innerHTML = r.partes.map(p => `<div class="lin"><span><i style="background:var(--${p[2]})"></i>${p[0]}</span><span>${brl(p[1])}</span></div>`).join('') +
     `<div class="lin" style="border-top:1px solid var(--bd);margin-top:4px;padding-top:6px"><b>Custo por peça</b><b>${brl(r.unit)}</b></div>` +
-    `<div class="mu">${r.gramas.toFixed(1)} g · ${Math.floor(r.horas)}h${String(Math.round(r.horas % 1 * 60)).padStart(2, '0')} · ${r.qtd} peça(s) na impressão</div>`;
-  $('#canais').innerHTML = r.canais.map((k, i) => `<tr${i === ci ? ' style="background:var(--ac2)"' : ''}><td>${k.nome}</td><td class="pr">${brl(k.p)}</td><td>${brl(k.taxa)}</td><td class="${k.lucro < 0 ? 'neg' : ''}">${brl(k.lucro)}</td></tr>`).join('');
+    `<div class="mu">${r.gramas.toFixed(1)} g · ${hm(r.horas)} ·${job.mesas.length > 1 ? ` ${job.mesas.length} mesas ·` : ''} ${r.qtd} peça(s) na impressão${num(cfg.imposto) ? ` · taxas incluem ${num(cfg.imposto)}% de imposto` : ''}</div>`;
+  $('#canais').innerHTML = r.canais.map(k => `<tr data-id="${esc(k.id)}" class="${k.id === c.id ? 'sel' : ''}" style="cursor:pointer"><td>${esc(k.nome)}</td><td class="pr">${brl(k.p)}</td><td>${brl(k.taxa)}</td><td class="${k.lucro < 0 ? 'neg' : ''}">${brl(k.lucro)}</td><td>${r.horas ? brl(k.lucroHora) : '–'}</td></tr>`).join('');
+  document.querySelectorAll('#canais tr').forEach(tr => tr.onclick = () => { $('#canal').value = tr.dataset.id; calc(); });
+  const tiers = [...cfg.atacado].sort((a, b) => num(a.q) - num(b.q));
+  $('#atac').innerHTML = tiers.map(t => {
+    const q = Math.max(1, num(t.q)), k = escolhido(conta({...job, ped: q}, cfg));
+    return `<tr data-q="${q}" class="${q === r.ped ? 'sel' : ''}" style="cursor:pointer"><td>${q}</td><td>${num(t.d)}%</td><td class="pr">${brl(k.p)}</td><td>${brl(k.p * q)}</td><td class="${k.lucro < 0 ? 'neg' : ''}">${brl(k.lucro)}</td></tr>`;
+  }).join('');
+  document.querySelectorAll('#atac tr').forEach(tr => tr.onclick = () => { $('#ped').value = tr.dataset.q; calc(); });
+  $('#bPreco').textContent = brl(c.p);
+  $('#bSub').textContent = `${c.nome} · lucro ${brl(c.lucro)}/peça`;
+  marca();
 }
 CAMPOS.forEach(k => $('#' + k).addEventListener('input', calc));
 
-function aviso(t) { $('#msg').textContent = t; setTimeout(() => $('#msg').textContent = '', 2500); }
-function texto(o) {
-  return `*Orçamento${cfg.loja ? ' - ' + cfg.loja : ' - impressão 3D'}*\n${o.nome || 'Peça'}\nQuantidade: ${o.qtd}\nValor unitário: ${brl(o.preco)}\n*Total: ${brl(o.preco * o.qtd)}*` +
-    (cfg.prazo ? `\nPrazo: ${cfg.prazo}` : '') + `\nVálido por ${num(cfg.validade) || 7} dias`;
-}
+// ---------- barra fixa do celular: mostra o preço enquanto o resultado está fora da tela
+let resVisivel = true;
+function barra() { $('#barra').classList.toggle('hide', aba !== 'calc' || resVisivel); }
+if ('IntersectionObserver' in window) new IntersectionObserver(es => { resVisivel = es[0].isIntersecting; barra(); }).observe($('#resCard'));
+$('#bVer').onclick = () => $('#resCard').scrollIntoView({behavior: 'smooth'});
 
-// ---------- orçamento em imagem
-function imagem(o) {
-  const W = 1080, H = 1350, c = document.createElement('canvas');
+// ---------- orçamento: texto e imagem (um item ou pedido com vários)
+const itemAtual = () => {
+  const c = escolhido(ultimo);
+  return {nome: job.nome || 'Peça', qtd: ultimo.ped, preco: c.p, custo: ultimo.unit, lucro: c.lucro, canal: c.nome, job: clone(job)};
+};
+function texto(itens) {
+  const tot = itens.reduce((s, i) => s + i.preco * i.qtd, 0);
+  const cab = `*Orçamento${cfg.loja ? ' - ' + cfg.loja : ' - impressão 3D'}*\n`;
+  const corpo = itens.length === 1
+    ? `${itens[0].nome}\nQuantidade: ${itens[0].qtd}\nValor unitário: ${brl(itens[0].preco)}\n`
+    : itens.map(i => `• ${i.nome}: ${i.qtd} × ${brl(i.preco)} = ${brl(i.qtd * i.preco)}`).join('\n') + '\n';
+  return cab + corpo + `*Total: ${brl(tot)}*` + (cfg.prazo ? `\nPrazo: ${cfg.prazo}` : '') + `\nVálido por ${num(cfg.validade) || 7} dias`;
+}
+function imagem(itens) {
+  const n = itens.length, W = 1080, yE = 560 + n * 120, H = Math.max(1350, yE + 520);
+  const c = document.createElement('canvas');
   c.width = W; c.height = H;
   const g = c.getContext('2d'), F = 'Segoe UI, Roboto, system-ui, sans-serif';
+  const corta = (t, w) => { let s = t; while (g.measureText(s + '…').width > w && s.length > 3) s = s.slice(0, -1); return s === t ? s : s + '…'; };
   g.fillStyle = '#f4f5f7'; g.fillRect(0, 0, W, H);
   g.fillStyle = '#0f9d6b'; g.fillRect(0, 0, W, 300);
-  g.fillStyle = '#fff'; g.font = `700 64px ${F}`; g.fillText(cfg.loja || 'Impressão 3D', 80, 150);
+  g.fillStyle = '#fff'; g.font = `700 64px ${F}`; g.fillText(corta(cfg.loja || 'Impressão 3D', W - 160), 80, 150);
   g.font = `400 36px ${F}`; g.fillText('Orçamento · ' + new Date().toLocaleDateString('pt-BR'), 80, 220);
-  g.fillStyle = '#fff'; g.beginPath(); g.roundRect(60, 360, W - 120, 640, 32); g.fill();
-  g.fillStyle = '#6b7280'; g.font = `500 34px ${F}`; g.fillText('PEÇA', 120, 450);
-  g.fillStyle = '#1b1f24'; g.font = `700 54px ${F}`;
-  const nome0 = o.nome || 'Peça impressa em 3D';
-  let nome = nome0;
-  while (g.measureText(nome + '…').width > W - 240 && nome.length > 3) nome = nome.slice(0, -1);
-  g.fillText(nome === nome0 ? nome : nome + '…', 120, 520);
-  const lin = (y, a, b) => {
-    g.fillStyle = '#6b7280'; g.font = `400 40px ${F}`; g.fillText(a, 120, y);
-    g.fillStyle = '#1b1f24'; g.font = `600 40px ${F}`; g.textAlign = 'right'; g.fillText(b, W - 120, y); g.textAlign = 'left';
-  };
-  lin(620, 'Quantidade', String(o.qtd));
-  lin(690, 'Valor unitário', brl(o.preco));
-  if (cfg.prazo) lin(760, 'Prazo', cfg.prazo);
-  g.strokeStyle = '#e3e6ea'; g.lineWidth = 3; g.beginPath(); g.moveTo(120, 820); g.lineTo(W - 120, 820); g.stroke();
-  g.fillStyle = '#1b1f24'; g.font = `600 44px ${F}`; g.fillText('Total', 120, 920);
-  g.fillStyle = '#0f9d6b'; g.font = `800 84px ${F}`; g.textAlign = 'right'; g.fillText(brl(o.preco * o.qtd), W - 120, 930); g.textAlign = 'left';
+  g.fillStyle = '#fff'; g.beginPath(); g.roundRect(60, 360, W - 120, yE - 360 + 240, 32); g.fill();
+  g.fillStyle = '#6b7280'; g.font = `500 34px ${F}`; g.fillText(n > 1 ? 'PEDIDO' : 'PEÇA', 120, 450);
+  itens.forEach((it, i) => {
+    const y = 530 + i * 120;
+    g.fillStyle = '#1b1f24'; g.font = `700 46px ${F}`; g.textAlign = 'left'; g.fillText(corta(it.nome || 'Peça impressa em 3D', W - 240), 120, y);
+    g.fillStyle = '#6b7280'; g.font = `400 36px ${F}`; g.fillText(`${it.qtd} × ${brl(it.preco)}`, 120, y + 50);
+    g.fillStyle = '#1b1f24'; g.font = `600 38px ${F}`; g.textAlign = 'right'; g.fillText(brl(it.qtd * it.preco), W - 120, y + 50); g.textAlign = 'left';
+  });
+  if (cfg.prazo) { g.fillStyle = '#6b7280'; g.font = `400 36px ${F}`; g.fillText('Prazo: ' + cfg.prazo, 120, yE + 20); }
+  g.strokeStyle = '#e3e6ea'; g.lineWidth = 3; g.beginPath(); g.moveTo(120, yE + 70); g.lineTo(W - 120, yE + 70); g.stroke();
+  g.fillStyle = '#1b1f24'; g.font = `600 44px ${F}`; g.fillText('Total', 120, yE + 170);
+  g.fillStyle = '#0f9d6b'; g.font = `800 84px ${F}`; g.textAlign = 'right';
+  g.fillText(brl(itens.reduce((s, i) => s + i.preco * i.qtd, 0)), W - 120, yE + 180); g.textAlign = 'left';
   g.fillStyle = '#6b7280'; g.font = `400 34px ${F}`;
-  g.fillText(`Orçamento válido por ${num(cfg.validade) || 7} dias.`, 80, 1090);
+  g.fillText(`Orçamento válido por ${num(cfg.validade) || 7} dias.`, 80, yE + 320);
   const contato = [cfg.zap && 'WhatsApp ' + cfg.zap, cfg.insta].filter(Boolean).join('   ·   ');
-  if (contato) { g.fillStyle = '#1b1f24'; g.font = `600 38px ${F}`; g.fillText(contato, 80, 1170); }
+  if (contato) { g.fillStyle = '#1b1f24'; g.font = `600 38px ${F}`; g.fillText(corta(contato, W - 160), 80, yE + 400); }
   g.fillStyle = '#9aa3ad'; g.font = `400 26px ${F}`; g.fillText('Feito com Preço 3D', 80, H - 60);
   return new Promise(r => c.toBlob(r, 'image/png'));
 }
-$('#enviar').onclick = async () => {
-  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
-  const o = {nome: job.nome, qtd: ultimo.qtd, preco: c.p};
-  const arq = new File([await imagem(o)], 'orcamento.png', {type: 'image/png'});
+async function envia(itens, nome) {
+  const arq = new File([await imagem(itens)], 'orcamento.png', {type: 'image/png'});
   try {
-    if (navigator.canShare && navigator.canShare({files: [arq]})) {
-      await navigator.share({files: [arq], text: texto(o)});
-      return;
-    }
+    if (navigator.canShare && navigator.canShare({files: [arq]})) { await navigator.share({files: [arq], text: texto(itens)}); return; }
   } catch (e) { if (e.name === 'AbortError') return; }
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(arq); a.download = 'orcamento' + (job.nome ? ' - ' + job.nome : '') + '.png'; a.click();
+  a.href = URL.createObjectURL(arq); a.download = 'orcamento' + (nome ? ' - ' + nome : '') + '.png'; a.click();
   aviso('Imagem salva. Envie pelo WhatsApp.');
-};
-$('#copiar').onclick = () => {
-  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
-  navigator.clipboard.writeText(texto({nome: job.nome, qtd: ultimo.qtd, preco: c.p})).then(() => aviso('Copiado! Cole no WhatsApp.'));
-};
+}
+const copia = itens => navigator.clipboard.writeText(texto(itens)).then(() => aviso('Copiado! Cole no WhatsApp.'));
+function salvaHist(itens, h) {
+  hist.unshift(Object.assign({id: uid(), ts: Date.now(), data: new Date().toLocaleDateString('pt-BR'), status: 'enviado'}, h));
+  gravar('calc3d.hist', hist); aviso('Orçamento salvo em Orçamentos.');
+}
+$('#enviar').onclick = () => envia([itemAtual()], job.nome);
+$('#copiar').onclick = () => copia([itemAtual()]);
 $('#salvar').onclick = () => {
-  const c = ultimo.canais[Math.min(num(job.canal), ultimo.canais.length - 1)];
-  hist.unshift({data: new Date().toLocaleDateString('pt-BR'), nome: job.nome || 'Sem nome', canal: c.nome,
-    preco: c.p, custo: ultimo.unit, qtd: ultimo.qtd, job: structuredClone(job)});
-  gravar('calc3d.hist', hist); aviso('Orçamento salvo.');
+  const i = itemAtual();
+  salvaHist([i], {nome: job.nome || 'Sem nome', canal: i.canal, preco: i.preco, custo: i.custo, lucro: i.lucro, qtd: i.qtd, job: i.job});
 };
 
+// ---------- pedido com várias peças
+function desenhaPedido() {
+  gravar('calc3d.pedido', pedido);
+  $('#pedCard').classList.toggle('hide', !pedido.length);
+  const tot = pedido.reduce((s, i) => s + i.preco * i.qtd, 0), luc = pedido.reduce((s, i) => s + i.lucro * i.qtd, 0);
+  $('#pedLista').innerHTML = pedido.map((i, k) => `<div class="lin" style="align-items:center"><span>${esc(i.nome)}<br><span class="mu">${i.qtd} × ${brl(i.preco)} · ${esc(i.canal)}</span></span><span>${brl(i.qtd * i.preco)} <button class="btn x" data-k="${k}" style="width:30px;height:30px">✕</button></span></div>`).join('') +
+    `<div class="lin" style="border-top:1px solid var(--bd);margin-top:4px;padding-top:6px"><b>Total</b><b>${brl(tot)}</b></div><div class="mu">Lucro do pedido: ${brl(luc)}</div>`;
+  document.querySelectorAll('#pedLista [data-k]').forEach(b => b.onclick = () => { pedido.splice(+b.dataset.k, 1); desenhaPedido(); marca(); });
+}
+$('#addPed').onclick = () => { pedido.push(itemAtual()); desenhaPedido(); marca(); aviso('Peça adicionada ao pedido. Calcule a próxima e adicione também.'); };
+$('#pedEnviar').onclick = () => envia(pedido, 'pedido');
+$('#pedCopiar').onclick = () => copia(pedido);
+$('#pedLimpar').onclick = () => { pedido = []; desenhaPedido(); marca(); };
+$('#pedSalvar').onclick = () => {
+  const tot = pedido.reduce((s, i) => s + i.preco * i.qtd, 0);
+  salvaHist(pedido, {nome: 'Pedido: ' + pedido.map(i => i.nome).join(', '), canal: [...new Set(pedido.map(i => i.canal))].join(', '),
+    preco: tot, custo: pedido.reduce((s, i) => s + i.custo * i.qtd, 0), lucro: pedido.reduce((s, i) => s + i.lucro * i.qtd, 0), qtd: 1, itens: clone(pedido)});
+};
+
+// ---------- orçamentos salvos + resumo do mês
+const STATUS = [['enviado', 'Enviado'], ['aprovado', 'Aprovado'], ['entregue', 'Entregue'], ['perdido', 'Não fechou']];
+const mesDe = ts => { const d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
+function desenhaResumo() {
+  const meses = [...new Set([mesDe(Date.now()), ...hist.map(h => mesDe(h.ts))])].sort().reverse();
+  const sel = $('#mes'), v = sel.value || meses[0];
+  sel.innerHTML = meses.map(m => `<option value="${m}">${new Date(m + '-15').toLocaleDateString('pt-BR', {month: 'long', year: 'numeric'})}</option>`).join('');
+  sel.value = meses.includes(v) ? v : meses[0];
+  const doMes = hist.filter(h => mesDe(h.ts) === sel.value);
+  const fechados = doMes.filter(h => h.status === 'aprovado' || h.status === 'entregue');
+  const fat = fechados.reduce((s, h) => s + h.preco * h.qtd, 0), luc = fechados.reduce((s, h) => s + h.lucro * h.qtd, 0);
+  const decididos = doMes.filter(h => h.status !== 'enviado').length;
+  $('#kpi').innerHTML = `<div><span class="mu">Orçamentos</span><b>${doMes.length}</b></div><div><span class="mu">Fechados</span><b>${fechados.length}</b></div>
+    <div><span class="mu">Faturamento</span><b>${brl(fat)}</b></div><div><span class="mu">Lucro</span><b>${brl(luc)}</b></div>
+    <div><span class="mu">Taxa de fechamento</span><b>${decididos ? Math.round(fechados.length / decididos * 100) + '%' : '–'}</b></div>`;
+}
+$('#mes').onchange = desenhaResumo;
 function desenhaHist() {
+  desenhaResumo();
   $('#lista').innerHTML = hist.length ? '' : '<div class="mu">Nenhum orçamento salvo ainda.</div>';
   hist.forEach((h, i) => {
     const d = document.createElement('div');
     d.className = 'hist';
-    d.innerHTML = `<div><b>${h.nome.replace(/</g, '&lt;')}</b><div class="mu">${h.data} · ${h.canal} · ${h.qtd} peça(s) · custo ${brl(h.custo)}</div></div>
-      <b style="color:var(--ac)">${brl(h.preco)}</b><button class="btn">Abrir</button><button class="btn x" style="width:36px;height:36px">✕</button>`;
-    const [, , ab, del] = d.children;
-    ab.onclick = () => { job = structuredClone(h.job); preencheJob(); montaSelects(); $('[data-tab=calc]').click(); };
+    d.innerHTML = `<div><b>${esc(h.nome)}</b><div class="mu">${h.data} · ${esc(h.canal)} · ${h.itens ? h.itens.length + ' itens' : h.qtd + ' un.'} · lucro ${brl(h.lucro * h.qtd)}</div></div>
+      <b style="color:var(--ac)">${brl(h.preco * h.qtd)}</b>
+      <select class="st-${h.status}" aria-label="Situação">${STATUS.map(([v, t]) => `<option value="${v}" ${v === h.status ? 'selected' : ''}>${t}</option>`).join('')}</select>
+      <button class="btn">Abrir</button><button class="btn x">✕</button>`;
+    const [, , st, ab, del] = d.children;
+    st.onchange = () => { h.status = st.value; st.className = 'st-' + h.status; gravar('calc3d.hist', hist); desenhaResumo(); };
+    ab.onclick = () => {
+      if (h.itens) { pedido = clone(h.itens); desenhaPedido(); }
+      else { job = migraJob(clone(h.job), cfg); preencheJob(); }
+      abreAba('calc');
+    };
     del.onclick = () => { if (confirm('Apagar este orçamento?')) { hist.splice(i, 1); gravar('calc3d.hist', hist); desenhaHist(); } };
     $('#lista').appendChild(d);
   });
 }
 
-// ---------- configurações
+// ---------- custos (configurações)
 function desenhaCfg() {
   document.querySelectorAll('[data-t]').forEach(e => {
     e.value = cfg[e.dataset.t] || ''; e.oninput = () => { cfg[e.dataset.t] = e.value.trim(); salvaCfg(); };
   });
   document.querySelectorAll('[data-c]').forEach(e => {
     if (e.type === 'checkbox') { e.checked = !!cfg[e.dataset.c]; e.onchange = () => { cfg[e.dataset.c] = e.checked; salvaCfg(); }; }
-    else { e.value = cfg[e.dataset.c]; e.oninput = () => { cfg[e.dataset.c] = num(e.value); salvaCfg(); }; }
+    else { e.value = cfg[e.dataset.c]; e.oninput = () => { cfg[e.dataset.c] = num(e.value); salvaCfg(); mostraFixo(); }; }
   });
-  lista('#cfgFils', cfg.fils, [['nome', 'Nome', 'text'], ['kg', 'R$/kg', 'number']]);
-  lista('#cfgCanais', cfg.canais, [['nome', 'Canal', 'text'], ['pct', 'Comissão %', 'number'], ['fixo', 'Fixo R$', 'number']]);
+  lista('#cfgFils', cfg.fils, [['nome', 'Material', 'text'], ['kg', 'R$ 1 kg/1 L', 'number']], {pre: 'f-'});
+  lista('#cfgImps', cfg.imps, [['nome', 'Impressora', 'text'], ['preco', 'Preço R$', 'number'], ['vida', 'Vida (h)', 'number'], ['watts', 'Watts', 'number']], {pre: 'i-'});
+  lista('#cfgIns', cfg.insumos, [['nome', 'Insumo', 'text'], ['preco', 'Pagou R$', 'number'], ['qtd', 'Vieram', 'number'],
+    ['modo', 'Conta por', [['peca', 'peça'], ['pedido', 'pedido']]]], {vazio: true, pre: 'n-', info: it => brl(insUnit(it)) + '/un'});
+  lista('#cfgFixos', cfg.fixos, [['nome', 'Gasto', 'text'], ['v', 'R$ por mês', 'number']], {vazio: true, pre: 'x-'});
+  lista('#cfgAtac', cfg.atacado, [['q', 'A partir de (un.)', 'number'], ['d', 'Desconto %', 'number']], {vazio: true});
+  desenhaCanais();
+  mostraFixo();
+  $('#sumFils').textContent = `Ver e editar os ${cfg.fils.length} materiais`;
+  $('#sumIns').textContent = `Ver e editar os ${cfg.insumos.length} insumos`;
 }
-function lista(sel, arr, cols) {
+function mostraFixo() {
+  const t = cfg.fixos.reduce((s, f) => s + num(f.v), 0);
+  $('#fixoHora').textContent = `Total ${brl(t)}/mês = ${brl(fixoHora(cfg))} por hora de impressão`;
+}
+// lista editável: cols = [chave, rótulo, 'text' | 'number' | [[valor, texto], ...]]
+function lista(sel, arr, cols, opt = {}) {
   const box = $(sel); box.innerHTML = '';
+  const tam = cols.map((c, j) => j === 0 && c[2] === 'text' ? 'minmax(0,1fr)' : Array.isArray(c[2]) ? '104px' : '82px').join(' ') + (opt.info ? ' 78px' : '') + ' 36px';
+  const cab = document.createElement('div');
+  const n = cols.length - 1 + (opt.info ? 1 : 0);
+  cab.className = 'fil lst cab'; cab.style.gridTemplateColumns = tam; cab.style.setProperty('--n', n);
+  cab.innerHTML = cols.map(c => `<label>${c[1]}</label>`).join('') + (opt.info ? '<label>Cada</label>' : '') + '<span></span>';
+  if (arr.length) box.appendChild(cab);
   arr.forEach((it, i) => {
     const d = document.createElement('div');
-    d.className = 'fil';
-    d.style.gridTemplateColumns = cols.map((c, j) => j ? '110px' : '1fr').join(' ') + ' 36px';
+    d.className = 'fil lst'; d.style.gridTemplateColumns = tam; d.style.setProperty('--n', n);
+    let inf;
     cols.forEach(([k, ph, t]) => {
-      const e = document.createElement('input');
-      e.type = t; e.placeholder = ph; e.value = it[k]; e.title = ph;
-      if (t === 'number') e.step = '0.01';
-      e.oninput = () => { it[k] = t === 'number' ? num(e.value) : e.value; salvaCfg(); };
+      let e;
+      if (Array.isArray(t)) {
+        e = document.createElement('select');
+        e.innerHTML = t.map(([v, tx]) => `<option value="${v}" ${it[k] === v ? 'selected' : ''}>${tx}</option>`).join('');
+        e.onchange = () => { it[k] = e.value; salvaCfg(); };
+      } else {
+        e = document.createElement('input');
+        e.type = t; e.placeholder = ph; e.value = it[k] ?? ''; e.setAttribute('aria-label', ph);
+        if (t === 'number') e.step = '0.01';
+        e.oninput = () => { it[k] = t === 'number' ? num(e.value) : e.value; salvaCfg(); if (inf) inf.textContent = opt.info(it); mostraFixo(); };
+      }
       d.appendChild(e);
     });
+    if (opt.info) { inf = document.createElement('span'); inf.className = 'info'; inf.textContent = opt.info(it); d.appendChild(inf); }
     const x = document.createElement('button');
-    x.className = 'btn x'; x.textContent = '✕';
-    x.onclick = () => { if (arr.length > 1) { arr.splice(i, 1); salvaCfg(); desenhaCfg(); } };
+    x.className = 'btn x'; x.textContent = '✕'; x.title = 'remover';
+    x.onclick = () => { if (opt.vazio || arr.length > 1) { arr.splice(i, 1); salvaCfg(); desenhaCfg(); } };
     d.appendChild(x);
     box.appendChild(d);
   });
 }
-function salvaCfg() { gravar('calc3d.cfg', cfg); }
-$('#cfgAddFil').onclick = () => { cfg.fils.push({nome: 'Novo', kg: 100}); salvaCfg(); desenhaCfg(); };
-$('#cfgAddCanal').onclick = () => { cfg.canais.push({nome: 'Novo canal', pct: 0, fixo: 0}); salvaCfg(); desenhaCfg(); };
+function salvaCfg() { gravar('calc3d.cfg', cfg); marca(); }
+const novo = (arr, o, pre) => { arr.push(Object.assign({id: pre + uid()}, o)); salvaCfg(); desenhaCfg(); };
+$('#cfgAddFil').onclick = () => novo(cfg.fils, {nome: 'Novo material', kg: 100}, 'f-');
+$('#cfgAddImp').onclick = () => novo(cfg.imps, {nome: 'Impressora ' + (cfg.imps.length + 1), preco: 3500, vida: 5000, watts: 100}, 'i-');
+$('#cfgAddIns').onclick = () => novo(cfg.insumos, {nome: 'Novo insumo', preco: 0, qtd: 1, modo: 'peca'}, 'n-');
+$('#cfgAddFixo').onclick = () => novo(cfg.fixos, {nome: 'Novo gasto', v: 0}, 'x-');
+$('#cfgAddAtac').onclick = () => { cfg.atacado.push({q: 0, d: 0}); salvaCfg(); desenhaCfg(); };
+$('#cfgAddCanal').onclick = () => novo(cfg.canais, {nome: 'Novo canal', faixas: [{ate: 0, pct: 0, fixo: 0}], auto: false}, 'c-');
+
+const ordena = c => c.faixas.sort((a, b) => (num(a.ate) || 1e12) - (num(b.ate) || 1e12));
+function desenhaCanais() {
+  $('#taxasInfo').textContent = cfg.taxasData ? 'Taxas conferidas em ' + cfg.taxasData.split('-').reverse().join('/') + '. Canais que você não editou se atualizam sozinhos quando há internet.' : '';
+  const box = $('#cfgCanais'); box.innerHTML = '';
+  const cols = '1fr 1fr 1fr 48px 36px';
+  cfg.canais.forEach((c, ci) => {
+    const d = document.createElement('div');
+    d.className = 'mesa';
+    d.innerHTML = `<div class="fil" style="grid-template-columns:minmax(0,1fr) auto 36px"><input value="${esc(c.nome)}" placeholder="Canal" aria-label="Nome do canal">
+      <label class="chk"><input type="checkbox" ${c.off ? '' : 'checked'}> mostrar</label><button class="btn x" title="remover canal">✕</button></div>
+      <div class="mu" style="margin:-2px 0 8px">${c.obs ? esc(c.obs) + '. ' : ''}${c.auto === false ? '<b>Editado por você</b> (não atualiza sozinho).' : ''}</div>
+      <div class="fil cab" style="grid-template-columns:${cols}"><label>Preço até (R$)</label><label>Comissão %</label><label>Fixo R$/item</label><label>Frete</label><span></span></div>`;
+    const [nm, mos, del] = [d.querySelector('input'), d.querySelector('.chk input'), d.querySelector('.btn.x')];
+    nm.oninput = () => { c.nome = nm.value; salvaCfg(); };
+    mos.onchange = () => { c.off = !mos.checked; salvaCfg(); };
+    del.onclick = () => { if (cfg.canais.length > 1 && confirm('Remover o canal ' + c.nome + '?')) { cfg.canais.splice(ci, 1); salvaCfg(); desenhaCfg(); } };
+    c.faixas.forEach((f, fi) => {
+      const l = document.createElement('div');
+      l.className = 'fil';
+      l.style.gridTemplateColumns = cols;
+      l.innerHTML = `<input type="number" step="0.01" min="0" value="${num(f.ate) || ''}" placeholder="∞" title="vazio = sem limite" aria-label="Preço até (vazio = sem limite)">
+        <input type="number" step="0.1" min="0" value="${num(f.pct)}" aria-label="Comissão %"><input type="number" step="0.01" min="0" value="${num(f.fixo)}" aria-label="Fixo por item">
+        <label class="chk" style="justify-content:center"><input type="checkbox" ${f.frete ? 'checked' : ''} aria-label="Paga frete"></label>
+        <button class="btn x" title="remover faixa">✕</button>`;
+      const [a, pc, fx, fr, x] = l.children;
+      [[a, 'ate'], [pc, 'pct'], [fx, 'fixo']].forEach(([e, k]) => e.oninput = () => { f[k] = num(e.value); c.auto = false; salvaCfg(); });
+      a.onchange = () => { ordena(c); salvaCfg(); desenhaCfg(); };
+      fr.firstElementChild.onchange = e => { f.frete = e.target.checked; c.auto = false; salvaCfg(); };
+      x.onclick = () => { if (c.faixas.length > 1) { c.faixas.splice(fi, 1); c.auto = false; salvaCfg(); desenhaCfg(); } };
+      d.appendChild(l);
+    });
+    const add = document.createElement('button');
+    add.className = 'btn'; add.textContent = '+ faixa de preço';
+    add.onclick = () => { c.faixas.unshift({ate: 1, pct: 0, fixo: 0}); ordena(c); c.auto = false; salvaCfg(); desenhaCfg(); };
+    d.appendChild(add);
+    box.appendChild(d);
+  });
+}
 
 // ---------- leitura do arquivo fatiado (zip sem biblioteca)
 async function lerZip(buf, alvo) {
@@ -470,61 +774,65 @@ async function lerZip(buf, alvo) {
 }
 function achaFil(tipo) {
   const t = (tipo || '').toLowerCase();
-  const i = cfg.fils.findIndex(f => f.nome.toLowerCase() === t);
-  return i >= 0 ? i : Math.max(0, cfg.fils.findIndex(f => t.includes(f.nome.toLowerCase().split(' ')[0])));
+  const f = cfg.fils.find(f => f.nome.toLowerCase() === t) || cfg.fils.find(f => t.includes(f.nome.toLowerCase().split(' ')[0])) || cfg.fils[0];
+  return f.id;
 }
-function aplica(seg, fils, origem) {
-  job.hh = Math.floor(seg / 3600); job.mm = Math.round(seg % 3600 / 60);
-  job.fils = fils.length ? fils : [{i: 0, g: 0}];
-  preencheJob(); desenhaFils(); calc();
+const mesa = (seg, fils) => ({hh: Math.floor(seg / 3600), mm: Math.round(seg % 3600 / 60), vz: 1, imp: cfg.imps[0].id, fils: fils.length ? fils : [{id: cfg.fils[0].id, g: 0}]});
+function aplica(mesas, origem) {
+  job.mesas = mesas.length ? mesas : [mesa(0, [])];
+  job.multi = job.mesas.length > 1;
+  preencheJob(); desenhaMesas(); calc();
   $('#msgArq').textContent = '✔ ' + origem;
 }
 async function carregaArq(f) {
   try {
     if (/\.gcode$/i.test(f.name)) {
-      const t = await f.slice(0, 200000).text() + await f.slice(-200000).text();
-      const tm = t.match(/total estimated time:\s*([^;\n]+)/i) || t.match(/estimated printing time[^=]*=\s*([^\n]+)/i);
-      let seg = 0;
-      if (tm) { const u = {d: 86400, h: 3600, m: 60, s: 1}; tm[1].replace(/(\d+)\s*([dhms])/g, (_, a, b) => seg += a * u[b]); }
-      const g = t.match(/total filament weight \[g\]\s*:\s*([\d.,]+)/i) || t.match(/filament used \[g\]\s*=\s*([\d.,]+)/i);
-      aplica(seg, g ? String(g[1]).split(',').map(x => ({i: 0, g: num(x)})).filter(x => x.g) : [], f.name);
+      const t = await f.slice(0, 200000).text() + '\n' + await f.slice(-200000).text();
+      const r = lerGcode(t);
+      if (!r.seg && !r.gramas.length) throw new Error('não achei tempo nem peso nesse G-code');
+      aplica([mesa(r.seg, r.gramas.map(g => ({id: cfg.fils[0].id, g})))], f.name);
       return;
     }
     const xml = await lerZip(await f.arrayBuffer(), 'Metadata/slice_info.config');
-    if (!xml) throw new Error('arquivo sem fatiamento — no Bambu Studio use "Exportar arquivo G-code fatiado" (.gcode.3mf)');
+    if (!xml) throw new Error('arquivo sem fatiamento: no Bambu Studio/Orca use "Exportar arquivo G-code fatiado" (.gcode.3mf)');
     const d = new DOMParser().parseFromString(xml, 'text/xml');
-    let seg = 0; const por = {};
-    d.querySelectorAll('plate').forEach(pl => {
+    const mesas = [...d.querySelectorAll('plate')].map(pl => {
       const m = k => pl.querySelector(`metadata[key="${k}"]`)?.getAttribute('value');
-      seg += num(m('prediction'));
+      const por = {};
       pl.querySelectorAll('filament').forEach(fi => {
-        const i = achaFil(fi.getAttribute('type'));
-        por[i] = (por[i] || 0) + num(fi.getAttribute('used_g'));
+        const id = achaFil(fi.getAttribute('type'));
+        por[id] = (por[id] || 0) + num(fi.getAttribute('used_g'));
       });
+      return mesa(num(m('prediction')), Object.entries(por).map(([id, g]) => ({id, g: Math.round(g * 10) / 10})));
     });
-    const fils = Object.entries(por).map(([i, g]) => ({i: +i, g: Math.round(g * 10) / 10}));
-    const np = d.querySelectorAll('plate').length;
-    aplica(seg, fils, `${f.name} — ${np} placa(s)`);
+    aplica(mesas, `${f.name}: ${mesas.length} placa(s)`);
     if (!$('#nome').value) { $('#nome').value = f.name.replace(/\.gcode\.3mf$|\.3mf$/i, ''); calc(); }
   } catch (err) { $('#msgArq').textContent = '✖ ' + err.message; }
 }
 const dz = $('#drop');
 dz.onclick = () => $('#arq').click();
-$('#arq').onchange = e => e.target.files[0] && carregaArq(e.target.files[0]);
+$('#arq').onchange = e => { e.target.files[0] && carregaArq(e.target.files[0]); e.target.value = ''; };
 dz.ondragover = e => { e.preventDefault(); dz.classList.add('hov'); };
 dz.ondragleave = () => dz.classList.remove('hov');
 dz.ondrop = e => { e.preventDefault(); dz.classList.remove('hov'); e.dataTransfer.files[0] && carregaArq(e.dataTransfer.files[0]); };
 
-// ---------- início
-// ---------- backup
+// ---------- backup (no celular abre o compartilhar: Drive, WhatsApp…)
 function msgBk(t) { $('#msgBk').textContent = t; }
-$('#bkSalvar').onclick = () => {
-  const dados = JSON.stringify({app: 'preco3d', versao: 1, data: new Date().toISOString(), cfg, hist}, null, 1);
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([dados], {type: 'application/json'}));
-  a.download = 'preco3d-backup-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
-  msgBk('Backup salvo em Downloads. Guarde no Drive ou mande para você no WhatsApp.');
-};
+async function fazBackup() {
+  const dados = JSON.stringify({app: 'preco3d', versao: 2, data: new Date().toISOString(), cfg, hist, pedido}, null, 1);
+  const arq = new File([dados], 'preco3d-backup-' + new Date().toISOString().slice(0, 10) + '.json', {type: 'application/json'});
+  let feito = false;
+  try {
+    if (navigator.canShare && navigator.canShare({files: [arq]})) { await navigator.share({files: [arq], title: 'Backup Preço 3D'}); feito = true; }
+  } catch (e) { if (e.name === 'AbortError') return; }
+  if (!feito) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(arq); a.download = arq.name; a.click();
+  }
+  cfg.ultBackup = Date.now(); gravar('calc3d.cfg', cfg); lembrete();
+  msgBk('Backup feito. Guarde no Drive ou mande para você no WhatsApp.');
+}
+$('#bkSalvar').onclick = fazBackup;
 $('#bkAbrir').onclick = () => $('#bkArq').click();
 $('#bkArq').onchange = async e => {
   const f = e.target.files[0]; if (!f) return;
@@ -532,38 +840,89 @@ $('#bkArq').onchange = async e => {
     const d = JSON.parse(await f.text());
     if (d.app !== 'preco3d' || !d.cfg) throw new Error();
     if (!confirm(`Restaurar backup de ${new Date(d.data).toLocaleDateString('pt-BR')}? Os dados atuais serão substituídos.`)) return;
-    cfg = Object.assign(structuredClone(PADRAO), d.cfg); hist = d.hist || [];
-    salvaCfg(); gravar('calc3d.hist', hist); desenhaCfg(); montaSelects(); calc();
+    cfg = migraCfg(d.cfg); hist = (d.hist || []).map(migraHist); pedido = d.pedido || [];
+    job = migraJob({}, cfg);
+    salvaCfg(); gravar('calc3d.hist', hist); preencheJob(); desenhaCfg(); montaSelects(); desenhaPedido(); calc();
     msgBk('✔ Backup restaurado: ' + hist.length + ' orçamento(s).');
   } catch (err) { msgBk('✖ Esse arquivo não é um backup do Preço 3D.'); }
   e.target.value = '';
 };
+function lembrete() {
+  const dias = Math.floor((Date.now() - (cfg.ultBackup || cfg.criado)) / 864e5);
+  const mostra = hist.length > 0 && dias >= 15 && !(cfg.adiado > Date.now());
+  $('#lembrete').classList.toggle('hide', !mostra);
+  $('#lembreteTxt').textContent = cfg.ultBackup ? `Faz ${dias} dias desde o último backup.` : 'Você ainda não fez backup dos seus preços e orçamentos.';
+}
+$('#lembreteOk').onclick = fazBackup;
+$('#lembreteDepois').onclick = () => { cfg.adiado = Date.now() + 3 * 864e5; gravar('calc3d.cfg', cfg); lembrete(); };
 
 // ---------- configuração inicial
 const IMPRESSORAS = [
   ['Bambu Lab A1', 100, 3500], ['Bambu Lab A1 mini', 80, 2300], ['Bambu Lab P1S', 130, 5500],
   ['Bambu Lab X1C', 140, 9000], ['Creality Ender 3 / V3', 120, 1500], ['Creality K1', 150, 3500],
-  ['Elegoo / Anycubic (FDM)', 120, 1800], ['Outra', 120, 2500]];
+  ['Elegoo / Anycubic (FDM)', 120, 1800], ['Elegoo Mars / Anycubic Photon (resina)', 60, 1500],
+  ['Elegoo Saturn (resina)', 80, 2800], ['Outra', 120, 2500]];
 function abreBoas() {
   $('#wImp').innerHTML = IMPRESSORAS.map((p, i) => `<option value="${i}">${p[0]}</option>`).join('');
-  $('#wPla').value = cfg.fils[0].kg; $('#wKwh').value = cfg.kwh; $('#wLoja').value = cfg.loja; $('#wZap').value = cfg.zap;
+  $('#wPla').value = num(acha(cfg.fils, 'f-pla').kg); $('#wKwh').value = cfg.kwh; $('#wHoras').value = cfg.horasMes;
+  $('#wReg').value = num(cfg.imposto) ? 'simples' : 'mei';
+  $('#wLoja').value = cfg.loja; $('#wZap').value = cfg.zap;
+  $('#wCanais').innerHTML = cfg.canais.map(c => `<label class="chk"><input type="checkbox" value="${esc(c.id)}" ${c.off ? '' : 'checked'}> ${esc(c.nome)}</label>`).join('');
   $('#boas').classList.remove('hide');
 }
 $('#wOk').onclick = () => {
   const p = IMPRESSORAS[+$('#wImp').value];
-  cfg.watts = p[1]; cfg.maqPreco = p[2];
-  cfg.fils[0].kg = num($('#wPla').value) || cfg.fils[0].kg;
+  Object.assign(cfg.imps[0], {nome: p[0], watts: p[1], preco: p[2]});
+  acha(cfg.fils, 'f-pla').kg = num($('#wPla').value) || acha(cfg.fils, 'f-pla').kg;
   cfg.kwh = num($('#wKwh').value) || cfg.kwh;
+  cfg.horasMes = num($('#wHoras').value) || cfg.horasMes;
+  const reg = $('#wReg').value, das = cfg.fixos.find(f => /DAS/.test(f.nome));
+  cfg.imposto = reg === 'simples' ? 6 : 0;
+  if (das) das.v = reg === 'mei' ? 82 : 0;
+  document.querySelectorAll('#wCanais input').forEach(e => { acha(cfg.canais, e.value).off = !e.checked; });
   cfg.loja = $('#wLoja').value.trim(); cfg.zap = $('#wZap').value.trim();
   salvaCfg(); desenhaCfg(); montaSelects(); calc();
   $('#boas').classList.add('hide');
 };
 $('#refazer').onclick = abreBoas;
 
-preencheJob(); montaSelects(); desenhaCfg(); calc();
+// ---------- desfazer: guarda até 50 estados (peça, custos e pedido) e volta para a aba onde foi a mudança
+let pilha = [], estadoAtual = null, tDesf;
+const estado = () => JSON.stringify({job, cfg, pedido});
+function marca() {
+  if (estadoAtual === null) { estadoAtual = estado(); return; }
+  clearTimeout(tDesf);
+  tDesf = setTimeout(() => {
+    const e = estado();
+    if (e === estadoAtual) return;
+    pilha.push({e: estadoAtual, aba}); if (pilha.length > 50) pilha.shift();
+    estadoAtual = e;
+  }, 500);
+}
+function desfazer() {
+  clearTimeout(tDesf);
+  const ant = estado() !== estadoAtual ? {e: estadoAtual, aba} : pilha.pop();
+  if (!ant) { aviso('Nada para desfazer.'); return; }
+  const d = JSON.parse(ant.e);
+  job = d.job; cfg = d.cfg; pedido = d.pedido; estadoAtual = ant.e;
+  gravar('calc3d.cfg', cfg); preencheJob(); desenhaCfg(); montaSelects(); desenhaPedido();
+  if (ant.aba !== aba) abreAba(ant.aba); else calc();
+  aviso('Desfeito.');
+}
+$('#desfazer').onclick = desfazer;
+addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z' && !e.shiftKey && !/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) { e.preventDefault(); desfazer(); }
+});
+
+// ---------- início
+preencheJob(); montaSelects(); desenhaCfg(); desenhaPedido(); calc(); lembrete();
 if (primeiraVez) abreBoas();
 
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js');
+if (location.protocol.startsWith('http')) {
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+  fetch('taxas.json', {cache: 'no-cache'}).then(r => r.json())
+    .then(t => { if (aplicaTaxas(cfg, t)) { salvaCfg(); desenhaCfg(); montaSelects(); calc(); } }).catch(() => {});
+}
 </script>
 </body>
 </html>

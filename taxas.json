@@ -1,0 +1,145 @@
+{
+ "v": 2,
+ "data": "2026-10-30",
+ "canais": [
+  {
+   "id": "direta",
+   "nome": "Venda direta (Pix/dinheiro)",
+   "obs": "WhatsApp, Instagram, feira: sem taxas",
+   "faixas": [
+    {
+     "ate": 0,
+     "pct": 0,
+     "fixo": 0
+    }
+   ]
+  },
+  {
+   "id": "cartao",
+   "nome": "Venda direta (cartão/link)",
+   "obs": "Maquininha ou link de pagamento no crédito à vista. Confira a taxa do seu",
+   "faixas": [
+    {
+     "ate": 0,
+     "pct": 4.5,
+     "fixo": 0
+    }
+   ]
+  },
+  {
+   "id": "shopee",
+   "nome": "Shopee",
+   "obs": "CNPJ. CPF com mais de 450 pedidos em 90 dias paga +R$ 3/item. Abaixo de R$ 9 o fixo é metade do preço (por isso 70%)",
+   "faixas": [
+    {
+     "ate": 8.99,
+     "pct": 70,
+     "fixo": 0
+    },
+    {
+     "ate": 79.99,
+     "pct": 20,
+     "fixo": 4.5
+    },
+    {
+     "ate": 99.99,
+     "pct": 14,
+     "fixo": 16
+    },
+    {
+     "ate": 199.99,
+     "pct": 14,
+     "fixo": 20
+    },
+    {
+     "ate": 0,
+     "pct": 14,
+     "fixo": 26
+    }
+   ]
+  },
+  {
+   "id": "ml",
+   "nome": "Mercado Livre Clássico",
+   "obs": "Comissão de 10 a 14% conforme a categoria. Abaixo de R$ 79 o fixo varia com o peso (≈ R$ 6 a 7). Acima de R$ 79 você paga parte do frete grátis",
+   "faixas": [
+    {
+     "ate": 78.99,
+     "pct": 14,
+     "fixo": 6.75
+    },
+    {
+     "ate": 0,
+     "pct": 14,
+     "fixo": 0,
+     "frete": true
+    }
+   ]
+  },
+  {
+   "id": "mlp",
+   "nome": "Mercado Livre Premium",
+   "obs": "Parcelado sem juros. Comissão de 15 a 19% conforme a categoria. Mesmo fixo e frete do Clássico",
+   "faixas": [
+    {
+     "ate": 78.99,
+     "pct": 19,
+     "fixo": 6.75
+    },
+    {
+     "ate": 0,
+     "pct": 19,
+     "fixo": 0,
+     "frete": true
+    }
+   ]
+  },
+  {
+   "id": "tiktok",
+   "nome": "TikTok Shop",
+   "obs": "Tabela única desde 15/07/2026. No programa de frete grátis, some mais 6%",
+   "faixas": [
+    {
+     "ate": 49.99,
+     "pct": 10,
+     "fixo": 4
+    },
+    {
+     "ate": 0,
+     "pct": 6,
+     "fixo": 6
+    }
+   ]
+  },
+  {
+   "id": "amazon",
+   "nome": "Amazon",
+   "obs": "Plano Profissional (R$ 19/mês). Comissão de 10 a 15% conforme a categoria. Logística (DBA/FBA) à parte",
+   "faixas": [
+    {
+     "ate": 0,
+     "pct": 13,
+     "fixo": 0
+    }
+   ]
+  },
+  {
+   "id": "magalu",
+   "nome": "Magalu",
+   "obs": "Comissão de 10 a 20% conforme a categoria. Fixo de R$ 5,50 em moda, beleza, pet e brinquedos. Acima de R$ 79 paga parte do frete",
+   "faixas": [
+    {
+     "ate": 78.99,
+     "pct": 18,
+     "fixo": 5
+    },
+    {
+     "ate": 0,
+     "pct": 18,
+     "fixo": 5,
+     "frete": true
+    }
+   ]
+  }
+ ]
+}
